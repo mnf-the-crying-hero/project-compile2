@@ -1,10 +1,10 @@
 plus
 {
 VAR{      
-INTEGER e;%alger
+INTEGER e;%%alger
 FLOAT x;            
 }
 CODE{
-z=5; 
+x=5; 
 }
 }

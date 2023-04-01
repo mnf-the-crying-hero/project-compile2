@@ -72,6 +72,9 @@
 
 #include<stdio.h>
 #include "bib.h"
+#include "hash_table.c"
+#define TAILLE_TABLE 100
+TableHachage th;
 extern int ligne;
 extern int col;
 int yyparse();
@@ -85,7 +88,7 @@ float x;
 
 
 /* Line 189 of yacc.c  */
-#line 89 "b.tab.c"
+#line 92 "b.tab.c"
 
 /* Enabling traces.  */
 #ifndef YYDEBUG
@@ -149,7 +152,7 @@ typedef union YYSTYPE
 {
 
 /* Line 214 of yacc.c  */
-#line 16 "b.y"
+#line 19 "b.y"
 
 int num;
 char* str;
@@ -163,7 +166,7 @@ struct{
 
 
 /* Line 214 of yacc.c  */
-#line 167 "b.tab.c"
+#line 170 "b.tab.c"
 } YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
@@ -175,7 +178,7 @@ struct{
 
 
 /* Line 264 of yacc.c  */
-#line 179 "b.tab.c"
+#line 182 "b.tab.c"
 
 #ifdef short
 # undef short
@@ -481,11 +484,11 @@ static const yytype_int8 yyrhs[] =
 /* YYRLINE[YYN] -- source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,    39,    39,    42,    43,    44,    45,    46,    48,    48,
-      50,    52,    52,    52,    54,    54,    55,    55,    57,    58,
-      60,    63,    67,    73,    91,    94,    97,   105,   105,   105,
-     107,   108,   108,   110,   110,   112,   112,   112,   112,   114,
-     114,   114,   114,   114,   114,   117
+       0,    42,    42,    45,    46,    47,    48,    49,    51,    51,
+      53,    55,    55,    55,    57,    57,    58,    58,    60,    61,
+      63,    66,    70,    76,    94,    97,   100,   108,   108,   108,
+     110,   111,   111,   113,   113,   115,   115,   115,   115,   117,
+     117,   117,   117,   117,   117,   120
 };
 #endif
 
@@ -1455,77 +1458,77 @@ yyreduce:
         case 2:
 
 /* Line 1455 of yacc.c  */
-#line 39 "b.y"
+#line 42 "b.y"
     { printf ("programme syntaxiquement juste"); YYACCEPT ;;}
     break;
 
   case 3:
 
 /* Line 1455 of yacc.c  */
-#line 42 "b.y"
+#line 45 "b.y"
     {remplire(&lisElts,0,typeidf,0);;}
     break;
 
   case 4:
 
 /* Line 1455 of yacc.c  */
-#line 43 "b.y"
+#line 46 "b.y"
     {remplire(&lisElts,1,typeidf,(yyvsp[(5) - (7)].num));;}
     break;
 
   case 5:
 
 /* Line 1455 of yacc.c  */
-#line 44 "b.y"
+#line 47 "b.y"
     {remplire(&lisElts,1,typeidf,(yyvsp[(5) - (7)].flt));;}
     break;
 
   case 8:
 
 /* Line 1455 of yacc.c  */
-#line 48 "b.y"
+#line 51 "b.y"
     {typeidf=0;;}
     break;
 
   case 9:
 
 /* Line 1455 of yacc.c  */
-#line 48 "b.y"
+#line 51 "b.y"
     {typeidf=1;;}
     break;
 
   case 11:
 
 /* Line 1455 of yacc.c  */
-#line 52 "b.y"
+#line 55 "b.y"
     {inserer((yyvsp[(1) - (1)].str));;}
     break;
 
   case 12:
 
 /* Line 1455 of yacc.c  */
-#line 52 "b.y"
+#line 55 "b.y"
     {inserer((yyvsp[(1) - (3)].str));;}
     break;
 
   case 13:
 
 /* Line 1455 of yacc.c  */
-#line 52 "b.y"
+#line 55 "b.y"
     {inserer((yyvsp[(1) - (4)].str));;}
     break;
 
   case 19:
 
 /* Line 1455 of yacc.c  */
-#line 58 "b.y"
+#line 61 "b.y"
     {remplire_cont_idf(&lisElts,(yyvsp[(1) - (3)].str),val2);non_dec(&lisElts,(yyvsp[(1) - (3)].str));;}
     break;
 
   case 20:
 
 /* Line 1455 of yacc.c  */
-#line 60 "b.y"
+#line 63 "b.y"
     {
                         if((yyvsp[(1) - (3)].col).type==0 && (yyvsp[(3) - (3)].col).type==0){(yyval.col).type=0; (yyval.col).entier=(yyvsp[(1) - (3)].col).entier+(yyvsp[(3) - (3)].col).entier;val2.entier=(yyval.col).entier;}
                         if((yyvsp[(1) - (3)].col).type==1 && (yyvsp[(3) - (3)].col).type==1){(yyval.col).type=1; (yyval.col).reel=(yyvsp[(1) - (3)].col).reel+(yyvsp[(3) - (3)].col).reel;val2.real=(yyval.col).reel;};}
@@ -1534,7 +1537,7 @@ yyreduce:
   case 21:
 
 /* Line 1455 of yacc.c  */
-#line 63 "b.y"
+#line 66 "b.y"
     {   
                         if((yyvsp[(1) - (3)].col).type==0 && (yyvsp[(3) - (3)].col).type==0){(yyval.col).type=0; (yyval.col).entier=(yyvsp[(1) - (3)].col).entier-(yyvsp[(3) - (3)].col).entier;val2.entier=(yyval.col).entier;}
                         if((yyvsp[(1) - (3)].col).type==1 && (yyvsp[(3) - (3)].col).type==1){(yyval.col).type=1; (yyval.col).reel=(yyvsp[(1) - (3)].col).reel-(yyvsp[(3) - (3)].col).reel;val2.real=(yyval.col).reel;}
@@ -1544,7 +1547,7 @@ yyreduce:
   case 22:
 
 /* Line 1455 of yacc.c  */
-#line 67 "b.y"
+#line 70 "b.y"
     {    
                         if((yyvsp[(1) - (3)].col).type==0 && (yyvsp[(3) - (3)].col).type==0){(yyval.col).type=0; (yyval.col).entier=(yyvsp[(1) - (3)].col).entier*(yyvsp[(3) - (3)].col).entier;val2.entier=(yyval.col).entier;}
                         if((yyvsp[(1) - (3)].col).type==0 && (yyvsp[(3) - (3)].col).type==1){(yyval.col).type=1; (yyval.col).reel=(yyvsp[(1) - (3)].col).reel*(yyvsp[(3) - (3)].col).reel;val2.real=(yyval.col).reel;}
@@ -1556,7 +1559,7 @@ yyreduce:
   case 23:
 
 /* Line 1455 of yacc.c  */
-#line 73 "b.y"
+#line 76 "b.y"
     {
                         if( (yyvsp[(3) - (3)].col).type==0){        
                         if((yyvsp[(3) - (3)].col).entier==0){
@@ -1580,7 +1583,7 @@ yyreduce:
   case 24:
 
 /* Line 1455 of yacc.c  */
-#line 91 "b.y"
+#line 94 "b.y"
     {
                 (yyval.col).reel=(yyvsp[(1) - (1)].flt);(yyval.col).type=1; val2.real=(yyvsp[(1) - (1)].flt);val2.type=1;
               ;}
@@ -1589,7 +1592,7 @@ yyreduce:
   case 25:
 
 /* Line 1455 of yacc.c  */
-#line 94 "b.y"
+#line 97 "b.y"
     {
                 (yyval.col).entier=(yyvsp[(1) - (1)].num);(yyval.col).type=0;val2.entier=(yyvsp[(1) - (1)].num);val2.type=0;
                 ;}
@@ -1598,7 +1601,7 @@ yyreduce:
   case 26:
 
 /* Line 1455 of yacc.c  */
-#line 97 "b.y"
+#line 100 "b.y"
     {
                 strcpy(val2.chaine,(yyvsp[(1) - (1)].str)); 
                ;}
@@ -1607,7 +1610,7 @@ yyreduce:
 
 
 /* Line 1455 of yacc.c  */
-#line 1611 "b.tab.c"
+#line 1614 "b.tab.c"
       default: break;
     }
   YY_SYMBOL_PRINT ("-> $$ =", yyr1[yyn], &yyval, &yyloc);
@@ -1819,7 +1822,7 @@ yyreturn:
 
 
 /* Line 1675 of yacc.c  */
-#line 120 "b.y"
+#line 123 "b.y"
 
 int yyerror(char* msg)
 {printf("%s ligne %d et colonne %d",msg,ligne,col);
@@ -1830,6 +1833,9 @@ yyin = fopen("test.txt", "r");
 yyparse();
 //afficheidf(); 
 affiche(lisElts); 
+th = init_table(TAILLE_TABLE);
+transformer_tsToth(lisElts,th);
+afficher_table(th);
 fclose (yyin);
 return 0;  
 } 

@@ -1,6 +1,9 @@
 %{
 #include<stdio.h>
 #include "bib.h"
+#include "hash_table.c"
+#define TAILLE_TABLE 100
+TableHachage th;
 extern int ligne;
 extern int col;
 int yyparse();
@@ -127,6 +130,9 @@ yyin = fopen("test.txt", "r");
 yyparse();
 //afficheidf(); 
 affiche(lisElts); 
+th = init_table(TAILLE_TABLE);
+transformer_tsToth(lisElts,th);
+afficher_table(th);
 fclose (yyin);
 return 0;  
 } 
