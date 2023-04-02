@@ -3,13 +3,14 @@ plus
 VAR{      
 INTEGER e;%%alger
 INTEGER z;
-INTEGER x;            
+INTEGER x;  
+FLOAT f;          
 }
 CODE{
 e=0;
 z=3;
 x=2;
-
+f=3.3;
 IF (e > z){ 
 e=1; 
 } 
@@ -18,6 +19,6 @@ e=2;
 } 
 e=x;
 e=z+1;
-e=5.5 / 2.2;
+e= f/ 2.2;
 }
 }

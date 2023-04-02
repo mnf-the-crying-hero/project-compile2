@@ -164,14 +164,14 @@ expr :  expr  padd  expr {
                 if($1.type==0 && $1.type==0){
                         $$.type = 0; // initialiser le type de la nouvelle expression à entier
                         
-                        sprintf(tmp,"%d", $1);
-                        sprintf(tmp2,"%d", $3);
+                        sprintf(tmp,"%d", $1.entier);
+                        sprintf(tmp2,"%d", $3.entier);
                         quadr("-",tmp,tmp2,res);
                 }else{
                         $$.type = 1; // initialiser le type de la nouvelle expression à entier
                         
-                        sprintf(tmp,"%.02f", $1);
-                        sprintf(tmp2,"%.02f", $3);
+                        sprintf(tmp,"%.02f", $1.reel);
+                        sprintf(tmp2,"%.02f", $3.reel);
                         quadr("-",tmp,tmp2,res); 
                 }
                               
@@ -207,14 +207,14 @@ expr :  expr  padd  expr {
                 if($1.type==0 && $1.type==0){
                         $$.type = 0; // initialiser le type de la nouvelle expression à entier
                         sprintf(res,"%d", qc);
-                        sprintf(tmp,"%d", $1);
-                        sprintf(tmp2,"%d", $3);
+                        sprintf(tmp,"%d", $1.entier);
+                        sprintf(tmp2,"%d", $3.entier);
                         quadr("*",tmp,tmp2,res);
                 }else{
                         $$.type = 1; // initialiser le type de la nouvelle expression à entier
                          
-                        sprintf(tmp,"%.02f", $1);
-                        sprintf(tmp2,"%.02f", $3);
+                        sprintf(tmp,"%.02f", $1.reel);
+                        sprintf(tmp2,"%.02f", $3.reel);
                         quadr("*",tmp,tmp2,res); 
                 }
                 $$.name = (char*) malloc(20);
@@ -247,20 +247,21 @@ expr :  expr  padd  expr {
         if($1.type!=$3.type){
            printf("Erreur semantique: Incompatibilite Type  a la ligne [%d] et a la colonne [%d]\n\n",ligne,col);exit(-1);     
         }
- 
-        if($3.entier==0 || $3.reel==0){
+    
+        if($3.entier!=0 && $3.reel!=0){
                 if($1.name==NULL && $3.name==NULL){
                 
                                 sprintf(res,"T%d", qc);
                                 if($1.type==0 && $1.type==0){
                                         $$.type = 0; // initialiser le type de la nouvelle expression à entier
-                                        sprintf(tmp,"%d", $1);
-                                        sprintf(tmp2,"%d", $3);
+                                        sprintf(tmp,"%d", $1.entier);
+                                        sprintf(tmp2,"%d", $3.entier);
                                         quadr("/",tmp,tmp2,res);  
                                 }else{
                                         $$.type = 1; // initialiser le type de la nouvelle expression à entier
-                                        sprintf(tmp,"%.02f", $1);
-                                        sprintf(tmp2,"%.02f", $3);
+                                        sprintf(tmp,"%.02f", $1.reel);
+                                        sprintf(tmp2,"%.02f", $3.reel);
+                                        printf("%s",tmp);
                                         quadr("/",tmp,tmp2,res); 
                                 }  
                                 $$.name = (char*) malloc(20);
