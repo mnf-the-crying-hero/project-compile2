@@ -76,14 +76,9 @@ void transformer_tsToth( Liste ts,TableHachage th){
 
     while(ts!=NULL)
     {
-       /*if(lisElts->type==0){
-         printf("%s\t\t%d\t\t%d\t\t%d\n",ts->Nom,ts->type,ts->nature,ts->valeur.entier);
-       }else if(lisElts->type==1){
-          printf("%s\t\t%d\t\t%d\t\t%.02f\n",lisElts->Nom,lisElts->type,lisElts->nature,lisElts->valeur.real);
-       }*/
-         ajouter_noeud(ts->Nom, ts->nature,ts->valeur,ts->type,&th);  
+        ajouter_noeud(ts->Nom, ts->nature,ts->valeur,ts->type,&th);  
         ts=ts->Suivant;
-      
+ 
     }
      
    

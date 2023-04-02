@@ -1,0 +1,5 @@
+faire le csting 
+multiplication
+somme 
+moins
+Division par zero

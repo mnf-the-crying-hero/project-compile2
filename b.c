@@ -98,6 +98,19 @@ void non_dec(Liste *lisElts,char Name[20])
      printf("Erreur semantique:\"%s\" non declare",Name);exit(-1);
    }
 }
+multi_val2 return_value(Liste *lisElts,char Name[20]){
+    Liste p;
+    p=*lisElts;
+    while(p!=NULL){
+       
+        if(strcmp((p)->Nom,Name)==0){
+            printf("valeur:%s [%s] %d",(p)->Nom,Name,(p)->valeur.entier);
+            return (p)->valeur;
+        }
+        else {(p)=(p)->Suivant;}
+    }
+    printf("pastrouver%s",Name );
+}
 void remplire_cont_idf(Liste *lisElts,char nom[20],multi_val2 valeur)
 {
   Liste p=*lisElts;

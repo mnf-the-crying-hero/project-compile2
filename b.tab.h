@@ -76,21 +76,22 @@ typedef union YYSTYPE
 {
 
 /* Line 1676 of yacc.c  */
-#line 19 "b.y"
+#line 35 "b.y"
 
 int num;
 char* str;
 float flt ;
 struct{
-  int entier;
-  float reel;
-  int type;
-}col;
+int entier;
+float reel;
+int type;
+char* name;
+}Col;
 
 
 
 /* Line 1676 of yacc.c  */
-#line 94 "b.tab.h"
+#line 95 "b.tab.h"
 } YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
