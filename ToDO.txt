@@ -3,3 +3,11 @@ multiplication
 somme 
 moins
 Division par zero
+
+PARTIEDEC:  pint LISTEVARIABLE ';' PARTIEDEC{remplire(&lisElts,0,0,0);}|
+           pfloat LISTEVARIABLE ';' PARTIEDEC{remplire(&lisElts,0,0,0);}|
+           pconst pint LISTEVARIABLE aff entier ';' PARTIEDEC{remplire(&lisElts,1,0,$5);}|
+            pconst pfloat LISTEVARIABLE aff reel ';' PARTIEDEC{remplire(&lisElts,1,1,$5);}| 
+            STRUCTURE PARTIEDEC
+           |
+            ;

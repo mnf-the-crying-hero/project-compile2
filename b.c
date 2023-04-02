@@ -48,7 +48,7 @@ void ajouttete(Liste *tete,char Nom[20],int nature,int type,int valeur)
   Liste nouv;
   
   nouv=creenoeud();
-  
+  printf("%d",type);
   if(nouv!=NULL){
        strcpy(nouv->Nom,Nom);
        nouv->nature=nature; 

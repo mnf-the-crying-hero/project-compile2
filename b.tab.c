@@ -503,7 +503,7 @@ static const yytype_uint16 yyrline[] =
 {
        0,    59,    59,    62,    63,    64,    65,    66,    68,    68,
       70,    72,    72,    72,    74,    74,    75,    75,    77,    78,
-     117,   161,   204,   246,   292,   293,   294,   300,   310,   310,
+     117,   161,   204,   246,   294,   295,   296,   302,   310,   310,
      310,   312,   330,   330,   332,   337,   344,   352,   358,   358,
      358,   358,   360,   360,   360,   360,   360,   360,   363
 };
@@ -1731,6 +1731,8 @@ yyreduce:
 /* Line 1455 of yacc.c  */
 #line 246 "b.y"
     {
+                  printf("%d alger%d",(yyvsp[(1) - (3)].Col).type,(yyvsp[(3) - (3)].Col).type);
+
         if((yyvsp[(1) - (3)].Col).type!=(yyvsp[(3) - (3)].Col).type){
            printf("Erreur semantique: Incompatibilite Type  a la ligne [%d] et a la colonne [%d]\n\n",ligne,col);exit(-1);     
         }
@@ -1781,21 +1783,21 @@ yyreduce:
   case 24:
 
 /* Line 1455 of yacc.c  */
-#line 292 "b.y"
+#line 294 "b.y"
     {(yyval.Col) = (yyvsp[(2) - (3)].Col);;}
     break;
 
   case 25:
 
 /* Line 1455 of yacc.c  */
-#line 293 "b.y"
+#line 295 "b.y"
     {(yyval.Col).name = strdup((yyvsp[(1) - (1)].str));;}
     break;
 
   case 26:
 
 /* Line 1455 of yacc.c  */
-#line 294 "b.y"
+#line 296 "b.y"
     {
                 (yyval.Col).type = 0; // initialiser le type de la nouvelle expression à entier
                 (yyval.Col).entier=(yyvsp[(1) - (1)].num);
@@ -1807,13 +1809,11 @@ yyreduce:
   case 27:
 
 /* Line 1455 of yacc.c  */
-#line 300 "b.y"
+#line 302 "b.y"
     {
                 (yyval.Col).type = 1; // initialiser le type de la nouvelle expression à réel
-               
-        
-                  (yyval.Col).reel=(yyvsp[(1) - (1)].flt);
-                  printf("%.02falger",(yyval.Col).reel);
+                (yyval.Col).reel=(yyvsp[(1) - (1)].flt);
+                  
         ;}
     break;
 

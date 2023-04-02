@@ -244,6 +244,8 @@ expr :  expr  padd  expr {
 
         }
         | expr pdiv expr {
+                  printf("%d alger%d",$1.type,$3.type);
+
         if($1.type!=$3.type){
            printf("Erreur semantique: Incompatibilite Type  a la ligne [%d] et a la colonne [%d]\n\n",ligne,col);exit(-1);     
         }
@@ -299,10 +301,8 @@ expr :  expr  padd  expr {
         }
         | reel {
                 $$.type = 1; // initialiser le type de la nouvelle expression à réel
-               
-        
                   $$.reel=$1;
-                  printf("%.02falger",$$.reel);
+                  
         };
 
 
