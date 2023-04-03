@@ -76,8 +76,9 @@ typedef union YYSTYPE
 {
 
 /* Line 1676 of yacc.c  */
-#line 35 "b.y"
+#line 42 "b.y"
 
+char* operCond;
 int num;
 char* str;
 float flt ;
@@ -87,11 +88,13 @@ float reel;
 int type;
 char* name;
 }Col;
+ 
+
 
 
 
 /* Line 1676 of yacc.c  */
-#line 95 "b.tab.h"
+#line 98 "b.tab.h"
 } YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */

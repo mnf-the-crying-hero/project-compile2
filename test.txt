@@ -2,11 +2,22 @@ plus
 {
 VAR{      
 INTEGER e;%%alger
-INTEGER z;
-INTEGER x;  
-FLOAT f;          
+FLOAT x;   
+INTEGER z;         
 }
 CODE{
-e=0;
+x=5; 
+IF(x <= z){ 
+ x=2; 
+}ELSE{
+    x=3;
+}
+WHILE (e <x) { 
+e=e+2; 
+}
+
+
+x= 5/2;
+x=5.5/2.5;
 }
 }

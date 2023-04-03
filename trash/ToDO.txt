@@ -3,7 +3,7 @@ multiplication
 somme 
 moins
 Division par zero
-
+complete les quad dans boucle forand while essaie de faire ou et et dans cond
 PARTIEDEC:  pint LISTEVARIABLE ';' PARTIEDEC{remplire(&lisElts,0,0,0);}|
            pfloat LISTEVARIABLE ';' PARTIEDEC{remplire(&lisElts,0,0,0);}|
            pconst pint LISTEVARIABLE aff entier ';' PARTIEDEC{remplire(&lisElts,1,0,$5);}|

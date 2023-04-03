@@ -11,11 +11,6 @@ int qc=0;
 int Fin_if=0;
 int finInst1=0;
 int finInst2=0;
-int save_bz=0;
-int save_bg=0;
-int deb_while=0;
-int deb_for=0;
-noeud* p;
 
 char tmp [20];
 char tmp2 [20];
@@ -50,18 +45,14 @@ float reel;
 int type;
 char* name;
 }Col;
- 
-
 }   
 %start S
 %token  pvar aff pcode pstruct pif pelse pfor pwhile pconst padd psous pmul pint pfloat pdiv ')' '(' '[' ']' '}' '{' ',' ';'   psup psupEgal pinf pinfEgal pequal pnotequal ou et negation
 %token <str>idf 
 %token <num>entier
 %token <flt>reel
-%type <Col>expr Ainstfor Binstfor cond_arret Cinstfor
-%type <operCond> c  
- 
- 
+%type <Col>expr
+%type <operCond>cn c
 %left ou
 %left et
 %left negation
@@ -69,7 +60,7 @@ char* name;
 %left  pmul pdiv 
 %left psup psupEgal pequal pinf pinfEgal
 %%
-S: idf '{' pvar '{' PARTIEDEC '}'{th = init_table(TAILLE_TABLE);transformer_tsToth(lisElts,th);} pcode '{' PARTIEINST '}' '}' { printf ("programme syntaxiquement juste"); YYACCEPT ;};
+S: idf '{' pvar '{' PARTIEDEC '}' pcode '{' PARTIEINST '}' '}' { printf ("programme syntaxiquement juste"); YYACCEPT ;};
 
 
 PARTIEDEC: PARTIEDEC pint LISTEVARIABLE ';' {remplire(&lisElts,0,0,0);}|
@@ -316,71 +307,33 @@ expr :  expr  padd  expr {
                 $$.type = 1; // initialiser le type de la nouvelle expression à réel
                   $$.reel=$1;
                   
-        }
-;
+        };
+
+
 
 INSTIWF:INSTIF|INSTW|INSTFOR;
 
-cond_arret:idf {$$.name=$1}|entier{$$.entier=$1};
-INSTFOR:Dinstfor ')' '{' PARTIEINST '}'
-        {       sprintf(tmp,"%d", deb_for);
-                quadr("BR",tmp,"vide","vide"); 
-                sprintf(tmp2,"%d", qc);
-                ajour_quad(save_bg,2,tmp2);
-        }
-;
-Dinstfor:Cinstfor':' cond_arret{
-        save_bg=qc;
-        sprintf(tmp,"T%d", qc);
-        if($3.name==NULL){
-                sprintf(tmp2,"%d", $3.entier);
-                quadr("BG","",$1.name,tmp2);
-        }else{
-               
-                quadr("BG","",$1.name,$3.name);
-        }
-    
-        
+INSTFOR:pfor '(' idf ':' entier ':' entier ':' cond_arret ')' '{' PARTIEINST '}'
+        /*{
+        int debut_boucle = qc; // sauvegarder l'indice du début de la boucle
+        char temp_cond[20];
+        sprintf(temp_cond, "temp_cond_%d", qc); // créer une variable temporaire pour la condition de boucle
+        quadr(":=", $5, "", $1); // initialiser la variable de boucle
+        quadr("LABEL", "", "", temp_cond); // étiquette pour la condition de boucle
+        quadr("<=", $1, $6, ""); // vérifier la condition de boucle
+        int saut_fin_boucle = qc; // sauvegarder l'indice pour le saut à la fin de la boucle
+        quadr("BRF", temp_cond, "", ""); // saut à la fin de la boucle si la condition est fausse
+       
+        quadr("+", $1, $5, $1); // incrémenter la variable de boucle
+        quadr("BR", "", "", temp_cond); // saut au début de la boucle
+        quadr("LABEL", "", "", ""); // étiquette pour la fin de la boucle
+        ajour_quad(saut_fin_boucle, 4, itoa(qc)); // mettre à jour le saut à la fin de la boucle
+        jour_quad(fin_boucle, 1, qc); // Mettre à jour le saut à la fin de boucle
+        }  */  
+        ;
+cond_arret:idf|entier;
 
-}
-;
-Cinstfor:Binstfor':' entier{
-        deb_for=qc;
-        sprintf(res,"T%d", qc);
-        sprintf(tmp,"%d", $3);
-        quadr("+",tmp,$1.name,res);
-        strcpy($$.name,res);
-}
-;
-Binstfor:Ainstfor ':' entier{
-     if($1.type!=0){
-        printf("Error Symantique:%d pas compatible la ligne [%d] et a la colonne [%d]\n",ligne,col);exit(-1);
-     }else{
-        sprintf(tmp,"%d",$3); 
-        quadr("=",tmp,"vide",$1.name);
-        strcpy($$.name,$1.name);
-     } 
-}
-;
-Ainstfor:pfor '(' idf {
-        printf("ddd%s",$3);
-        printf("dd%lu",th);
-        p=lookup($3,th);
-     
-        if(p==NULL){
-                printf("Error Symantique:%d non declareea la ligne [%d] et a la colonne [%d]\n",$3,ligne,col);exit(-1);
-        }else{
-
-                $$.type=p->type;
-                $$.name=$3;
-                printf($$.name);
-               
-        }
-        }
-;
-
-
-INSTIF: Bif {
+INSTIF: Bif      {
         sprintf(tmp,"%d",qc); 
         ajour_quad(finInst1,2,tmp);
         
@@ -390,7 +343,7 @@ INSTIF: Bif {
         ajour_quad(deb_if,2,tmp2);
         quadr("FIN", "vide","vide","vide"); 
         }
-        |Bifelse pelse '{' PARTIEINST '}'
+        |Bif pelse '{' PARTIEINST '}'
         {
 
         sprintf(tmp,"%d",qc); 
@@ -399,76 +352,65 @@ INSTIF: Bif {
         sprintf(tmp2,"%d",qc);
         finInst2=qc; 
         ajour_quad(deb_if,2,tmp2);
-        //quadr("FIN", "vide","vide","vide"); 
+        quadr("FIN", "vide","vide","vide"); 
 
         }
         ;
 Bif:Aif '{' PARTIEINST '}'
         {     
         finInst1=qc; 
- 
+        quadr("BR", "","vide","vide"); 
         sprintf(tmp,"%d",qc); // transformer entier vers string
         ajour_quad(deb_if,2,tmp);
         }
         ;
-Bifelse:Aif '{' PARTIEINST '}'
-        {     
-        finInst1=qc; 
-        quadr("BR", "","vide","vide"); 
-     
+Aif:pif '(' cond ')' 
+        {
+       // J'ai laisser le champs 2 vide. Je dois le remplir apres
+         
         }
         ;
-Aif:pif '(' cond ')'{
+cond:   expr cn expr {
          deb_if=qc; 
-         quadr("BZ","","temp_cond","vide"); 
-        }
-    ;
-cond:   expr c expr {
-         /*deb_if=qc; 
-         quadr($2,"","temp_cond","vide"); */
+         quadr($2,"","temp_cond","vide"); 
+  
         } 
-        |cond ou cond
+        |cond1 ou cond{
+        sprintf(tmp,"%d",qc); 
+         ajour_quad(deb_if_ou,2,tmp) ;
+        }
         |expr et cond 
         |negation cond
 ;
- 
-c:psup {strcpy($$,"BLE");}|psupEgal {strcpy($$,"BL");} |pequal {strcpy($$,"BNE")}|pinf {strcpy($$,"BGE")}|pinfEgal{strcpy($$,"BG")}|pnotequal{strcpy($$,"BE")} 
+cond1:expr c expr{
+         deb_if_ou=qc; 
+         quadr($2,"","temp_cond","vide"); 
+        } 
+;
+cn:psup {strcpy($$,"BLE");}|psupEgal {strcpy($$,"BL");} |pequal {strcpy($$,"BNE")}|pinf {strcpy($$,"BGE")}|pinfEgal{strcpy($$,"BG")}|pnotequal{strcpy($$,"BE")} 
+;
+c:psup {strcpy($$,"BG");}|psupEgal {strcpy($$,"BGE");} |pequal {strcpy($$,"BE")}|pinf {strcpy($$,"BL")}|pinfEgal{strcpy($$,"BLE")}|pnotequal{strcpy($$,"BNE")} 
 ;
 
+INSTW:pwhile '(' cond ')' '{' PARTIEINST '}';
 
-INSTW:Binstw '{' PARTIEINST '}'{
-       
-        sprintf(tmp,"%d",deb_while);
-        quadr("BR",tmp,"vide","vide");//qc sincrement dans le quadr
-        sprintf(tmp2,"%d",qc);
-        ajour_quad(save_bz,2,tmp2);
-        //quadr("FIN","vide","vide","vide");
-        };
-Binstw:Ainstw '(' cond ')'{
-           save_bz=qc;   
-           quadr("BZ","","temp_cond","vide"); 
-        }
-        ;
-Ainstw:pwhile{
-        deb_while=qc;
-     
-        };
+
 %%
 int yyerror(char* msg)
 {printf("%s ligne %d et colonne %d",msg,ligne,col);
 return 0;
 }
 int main()  {  
-
+yyin = fopen("test.txt", "r");
 yyparse();
 //afficheidf(); 
 //liste
 affiche(lisElts); 
- 
+th = init_table(TAILLE_TABLE);
+transformer_tsToth(lisElts,th);
 //afficher_table(th);
 //Quadruple
 affich_quad();
-//yyin = fopen("test.txt", "r");
-//fclose (yyin);
+fclose (yyin);
 return 0;  
 } 

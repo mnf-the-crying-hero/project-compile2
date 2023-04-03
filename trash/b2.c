@@ -30,10 +30,10 @@ void afficheidf()
 {
   int i=0;
   printf("\n/********table des IDFS**********/\n");
-while(i<cpt){
-  printf("%s \n",lidf[i].Nom);
-    i++;
-}
+  while(i<cpt){
+    printf("%s \n",lidf[i].Nom);
+      i++;
+  }
 }
 
 Liste creenoeud()
@@ -48,7 +48,7 @@ void ajouttete(Liste *tete,char Nom[20],int nature,int type,int valeur)
   Liste nouv;
   
   nouv=creenoeud();
-  
+  printf("%d",type);
   if(nouv!=NULL){
        strcpy(nouv->Nom,Nom);
        nouv->nature=nature; 
@@ -64,17 +64,16 @@ void ajouttete(Liste *tete,char Nom[20],int nature,int type,int valeur)
 
 void remplire(Liste *lisElts,int nature,int type,int valeur)//rempire +double declaration
 {
-   int i; 
-      
+   int i;   
    for(i=cpt-1;i>=0;i--)
    {
     if(recherche_list(lisElts,lidf[i].Nom)==-1){
-         
         ajouttete(lisElts,lidf[i].Nom,nature,type,valeur);
         cpt--;
-    }else{printf("error:Double Declaration \"%s\"",lidf[i].Nom);exit(-1);} 
+    }else {printf("error:Double Declaration \"%s\"",lidf[i].Nom);exit(-1);} 
    }
 }
+
 void affiche(Liste lisElts)
 {
   
@@ -98,6 +97,19 @@ void non_dec(Liste *lisElts,char Name[20])
    if(recherche_list(lisElts,Name)==-1){
      printf("Erreur semantique:\"%s\" non declare",Name);exit(-1);
    }
+}
+multi_val2 return_value(Liste *lisElts,char Name[20]){
+    Liste p;
+    p=*lisElts;
+    while(p!=NULL){
+       
+        if(strcmp((p)->Nom,Name)==0){
+            printf("valeur:%s [%s] %d",(p)->Nom,Name,(p)->valeur.entier);
+            return (p)->valeur;
+        }
+        else {(p)=(p)->Suivant;}
+    }
+    printf("pastrouver%s",Name );
 }
 void remplire_cont_idf(Liste *lisElts,char nom[20],multi_val2 valeur)
 {

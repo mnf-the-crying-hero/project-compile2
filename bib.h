@@ -3,7 +3,7 @@
 #include<string.h>
 typedef struct element{
     char Nom[20];
-
+    
 }tabidf;
  
 
