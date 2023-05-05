@@ -1,3 +1,5 @@
+
+1 etap
 t6 = 4*j 
 t8 = j‐1 
 t9 = 4 * t8 
@@ -13,7 +15,7 @@ t16 = j+1
 t17 = t16‐1
 t18 = 4 * t17
 A[t18] = temp
-
+2 etap
 t6 = 4*j 
 t8 = j‐1
 t9 = 4*t8 
@@ -25,7 +27,7 @@ t15 =4*t14
 A[t15] = t13
 t18 = 4*j
 A[t18] = temp
-
+3em etap
 t6 = 4*j 
 t8 = j‐1
 t9 = 4*t8 
@@ -37,6 +39,7 @@ t15 = 4*t8
 A[t15] = t13 
 t18 = t6
 A[t6] = temp
+resultat
 
 t6 = 4*j 
 t8 = j‐1 

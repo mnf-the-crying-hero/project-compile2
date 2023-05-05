@@ -1,0 +1,30 @@
+plus
+{
+VAR{      
+INTEGER e;%%alger
+FLOAT x;   
+INTEGER z,f;         
+}
+CODE{
+x=5; 
+%%Propargation copie
+%%e=x; 
+%%f=5*x;
+
+%%Propagation expression
+e=x+5; 
+f=5*e;
+
+%%Elimination d'expression redondantes
+%%e=x+5; 
+%%f=x+5;
+
+%%Simplification algébrique
+%%e=x*3;
+
+%%Elimination de code inutile
+%%e=x; 
+%%f=5*x;
+
+}
+}

@@ -127,9 +127,13 @@ instaff:idf aff expr{
         ;
 
 
-expr :  expr  padd  expr {
+expr :  expr  padd  expr {     
+        if($1.type!=$3.type){
+                printf("Erreur semantique: Incompatibilite Type  a la ligne [%d] et a la colonne [%d]\n\n",ligne,col);exit(-1);     
+        }        
+        sprintf(res,"T%d", qc);
         if($1.name==NULL && $3.name==NULL){
-                sprintf(res,"T%d\0", qc);
+               
                 if($1.type==0 && $3.type==0){
                         $$.type = 0;
                         sprintf(tmp,"%d", $1);
@@ -143,37 +147,48 @@ expr :  expr  padd  expr {
                         quadr("+",tmp,tmp2,res); 
                 }
                 printf("%s",res);
-                $$.name = (char*) malloc(20);
-                strcpy($$.name,res);
+             
                  
         }else   if($1.name==NULL){
-                        sprintf(res,"T%d", qc);
+                        
+                        
                         if($1.type==0){
                         sprintf(tmp,"%d", $1);
-                        quadr("+",$3.name,tmp,res); 
+                        quadr("+",tmp,$3.name,res); 
                         }else{
                         sprintf(tmp,"%.02f", $3);
-                        quadr("+",$3.name,tmp,res); 
+                        quadr("+",tmp,$3.name,res); 
                         }
-                        strcpy($$.name,res);
+                      
+                     
                 }else if($3.name==NULL){
-                         
-                        sprintf(res,"T%d", qc);
+                       
+                       
                         if($3.type==0){
                         sprintf(tmp,"%d",$3);
-                        quadr("+",tmp,$1.name,res); 
+                        quadr("+",$1.name,tmp,res); 
                         }else{
                         sprintf(tmp,"%.02f", $3);
-                        quadr("+",tmp,$1.name,res); 
+                        quadr("+",$1.name,tmp,res); 
                         }  
-                        strcpy($$.name,res);
+                        $$.name = (char*) malloc(20);
+                       
+                }else{
+                        
+                        quadr("+",$1.name,$3.name,res); 
                 }
+                $$.name = (char*) malloc(20);
+                strcpy($$.name,res);
 
        // strcpy($$.name, tmp);
         }
         |expr psous expr {
+        if($1.type!=$3.type){
+                printf("Erreur semantique: Incompatibilite Type  a la ligne [%d] et a la colonne [%d]\n\n",ligne,col);exit(-1);     
+        }
+        sprintf(res,"T%d", qc);
         if($1.name==NULL && $3.name==NULL){
-                sprintf(res,"T%d", qc);
+             
                 if($1.type==0 && $1.type==0){
                         $$.type = 0; // initialiser le type de la nouvelle expression à entier
                         
@@ -187,39 +202,49 @@ expr :  expr  padd  expr {
                         sprintf(tmp2,"%.02f", $3.reel);
                         quadr("-",tmp,tmp2,res); 
                 }
-                              
-                $$.name = (char*) malloc(20);
-                strcpy($$.name,res);  
+                           
+               
         }else   if($1.name==NULL){
-                        sprintf(res,"T%d", qc);
+                       
                         if($1.type==0){
                         sprintf(tmp,"%d", $1);
-                        quadr("-",$3.name,tmp,res); 
+                        quadr("-",tmp,$3.name,res); 
                         }else{
                         sprintf(tmp,"%.02f", $3);
-                        quadr("-",$3.name,tmp,res); 
+                        quadr("-",tmp,$3.name,res); 
                         }
+                        $$.name = (char*) malloc(20);
                         strcpy($$.name,res);
                 }else if($3.name==NULL){
                          
-                        sprintf(res,"T%d", qc);
+                       
                         if($3.type==0){
                         sprintf(tmp,"%d",$3);
-                        quadr("-",tmp,$1.name,res); 
+                        quadr("-",$1.name,tmp,res); 
                         }else{
                         sprintf(tmp,"%.02f", $3);
-                        quadr("-",tmp,$1.name,res); 
+                        quadr("-",$1.name,tmp,res); 
                         }  
+                        $$.name = (char*) malloc(20);
                         strcpy($$.name,res);
+                }else{
+                   
+                        quadr("-",$1.name,$3.name,res); 
                 }
+                $$.name = (char*) malloc(20);
+                strcpy($$.name,res); 
 
         }
         |expr pmul expr {
+        if($1.type!=$3.type){
+           printf("Erreur semantique: Incompatibilite Type  a la ligne [%d] et a la colonne [%d]\n\n",ligne,col);exit(-1);     
+        }
+        sprintf(res,"T%d", qc);
         if($1.name==NULL && $3.name==NULL){
-                sprintf(res,"T%d", qc);
+                
                 if($1.type==0 && $1.type==0){
                         $$.type = 0; // initialiser le type de la nouvelle expression à entier
-                        sprintf(res,"%d", qc);
+                        
                         sprintf(tmp,"%d", $1.entier);
                         sprintf(tmp2,"%d", $3.entier);
                         quadr("*",tmp,tmp2,res);
@@ -230,43 +255,48 @@ expr :  expr  padd  expr {
                         sprintf(tmp2,"%.02f", $3.reel);
                         quadr("*",tmp,tmp2,res); 
                 }
-                $$.name = (char*) malloc(20);
-                strcpy($$.name,res);  
+                  
+              
         }else   if($1.name==NULL){
-                        sprintf(res,"T%d", qc);
+                        
                         if($1.type==0){
                         sprintf(tmp,"%d", $1);
-                        quadr("*",$3.name,tmp,res); 
+                        quadr("*",tmp,$3.name,res); 
                         }else{
                         sprintf(tmp,"%.02f", $3);
-                        quadr("*",$3.name,tmp,res); 
+                        quadr("*",tmp,$3.name,res); 
                         }
-                        strcpy($$.name,res);
+                    
                 }else if($3.name==NULL){
                          
-                        sprintf(res,"T%d", qc);
+                         
                         if($3.type==0){
                         sprintf(tmp,"%d",$3);
-                        quadr("*",tmp,$1.name,res); 
+                        quadr("*",$1.name,tmp,res); 
                         }else{
                         sprintf(tmp,"%.02f", $3);
-                        quadr("*",tmp,$1.name,res); 
+                        quadr("*",$1.name,tmp,res); 
                         }  
-                        strcpy($$.name,res);
+                        
+                }else{
+                         
+                        quadr("*",$1.name,$3.name,res);   
                 }
+                $$.name = (char*) malloc(20);
+                strcpy($$.name,res);
 
         }
         | expr pdiv expr {
-                  printf("%d alger%d",$1.type,$3.entier);
+        //printf("%d alger%d",$1.type,$3.entier);
 
         if($1.type!=$3.type){
            printf("Erreur semantique: Incompatibilite Type  a la ligne [%d] et a la colonne [%d]\n\n",ligne,col);exit(-1);     
         }
-    
+        sprintf(res,"T%d", qc);
         if($3.entier!=0 || $3.reel!=0){
                 if($1.name==NULL && $3.name==NULL){
                 
-                                sprintf(res,"T%d", qc);
+                                
                                 if($1.type==0 && $1.type==0){
                                         $$.type = 0; // initialiser le type de la nouvelle expression à entier
                                         sprintf(tmp,"%d", $1.entier);
@@ -279,29 +309,32 @@ expr :  expr  padd  expr {
                                         printf("%s",tmp);
                                         quadr("/",tmp,tmp2,res); 
                                 }  
-                                $$.name = (char*) malloc(20);
-                                strcpy($$.name,res);        
+                                   
                 }else   if($1.name==NULL){
-                                sprintf(res,"T%d", qc);
+                                 
                                 if($1.type==0){
                                 sprintf(tmp,"%d", $1);
-                                quadr("/",$3.name,tmp,res); 
+                                quadr("/",tmp,$3.name,res); 
                                 }else{
-                                sprintf(tmp,"%.02f", $3);
-                                quadr("/",$3.name,tmp,res); 
+                                sprintf(tmp,"%.02f", $1);
+                                quadr("/",tmp,$3.name,res); 
                                 }
-                                strcpy($$.name,res);
+                                
                         }else if($3.name==NULL){     
-                                sprintf(res,"T%d", qc);
+                                 
                                 if($3.type==0){
                                 sprintf(tmp,"%d",$3);
-                                quadr("/",tmp,$1.name,res); 
+                                quadr("/",$1.name,tmp,res); 
                                 }else{
                                 sprintf(tmp,"%.02f", $3);
-                                quadr("/",tmp,$1.name,res); 
+                                quadr("/",$1.name,tmp,res); 
                                 }  
-                                strcpy($$.name,res);
+                                 
+                        }else{
+                             quadr("/",$1.name,$3.name,res);     
                         }
+                $$.name = (char*) malloc(20);
+                strcpy($$.name,res);
         }else{printf("Erreur semantique: Division par zero  a la ligne [%d] et a la colonne [%d]\n\n",ligne,col);exit(-1);} 
         }
         | '(' expr ')' {$$ = $2;}
@@ -388,7 +421,7 @@ INSTIF: Bif {
         sprintf(tmp2,"%d",qc);
         finInst2=qc; 
         ajour_quad(deb_if,2,tmp2);
-        quadr("FIN", "vide","vide","vide"); 
+        
         }
         |Bifelse pelse '{' PARTIEINST '}'
         {
@@ -397,8 +430,8 @@ INSTIF: Bif {
         ajour_quad(finInst1,2,tmp);
 
         sprintf(tmp2,"%d",qc);
-        finInst2=qc; 
-        ajour_quad(deb_if,2,tmp2);
+        /*finInst2=qc; 
+        ajour_quad(deb_if,2,tmp2);*/
         //quadr("FIN", "vide","vide","vide"); 
 
         }
@@ -415,7 +448,8 @@ Bifelse:Aif '{' PARTIEINST '}'
         {     
         finInst1=qc; 
         quadr("BR", "","vide","vide"); 
-     
+        sprintf(tmp,"%d",qc); 
+        ajour_quad(deb_if,2,tmp);
         }
         ;
 Aif:pif '(' cond ')'{
@@ -468,6 +502,10 @@ affiche(lisElts);
 //afficher_table(th);
 //Quadruple
 affich_quad();
+optimize_quads(quadruplets,qc);
+printf("##############optimiser############");
+affich_quad();
+
 //yyin = fopen("test.txt", "r");
 //fclose (yyin);
 return 0;  

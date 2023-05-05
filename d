@@ -1,113 +1,118 @@
-%{
-#include<stdio.h>
-#include "bib.h"
-extern int ligne;
-extern int col;
-int yyparse();
-int yylex();
-int yyerror(char *s);
+#define MAX_QUADS 1000
+#include <stdlib.h>
  
-Liste lisElts;
-int typeidf,nature;
-multi_val2 val2;
-float x;
-%}
+typedef struct quadruplet {
+  char op[20];
+  char arg1[20];
+  char arg2[20];
+  char res[20];
+} quadruplet;
 
-%union {
-int num;
-char* str;
-float flt ;
-struct{
-  int entier;
-  float reel;
-  int type;
-}col;
-}   
-%start S
-%token  pvar aff pcode pstruct pif pelse pfor pwhile pconst padd psous pmul pint pfloat pdiv ')' '(' '[' ']' '}' '{' ',' ';' eq psup psupEgal pinf pinfEgal pequal pnotequal ou et negation
-%token <str>idf 
-%token <num>entier
-%token <flt>reel
-%type <col>expr
-%left ou
-%left et
-%left negation
-%left  padd psous
-%left  pmul pdiv 
-%left psup psupEgal pequal pinf pinfEgal
-%%
-S: idf '{' pvar '{' partiedec '}' pcode '{' partieinst '}' '}' { printf ("programme syntaxiquement juste"); YYACCEPT ;};
-
-type : pint {typeidf=0;}|pfloat {typeidf=1;}
-;
-partiedec:type listvariable ';'{remplire(&lisElts,0,typeidf);}   
-            |pconst type listvariable eq entier ';' {remplire(&lisElts,0,typeidf);}|
-            pconst type listvariable eq reel ';'{remplire(&lisElts,1,typeidf);}|
-            partiedec pconst type listvariable  eq entier';'{remplire(&lisElts,1,typeidf);}|
-            partiedec pconst type listvariable eq reel';'{remplire(&lisElts,1,typeidf);}
-            ;
+quadruplet quadruplets[MAX_QUADS];
  
-listvariable:idf {inserer($1);}|idf ',' listvariable {inserer($1);}
-partieinst:x|x partieinst;
-x:inst|instiwf;
+extern int qc;
+void quadr(char *op, char *arg1, char *arg2, char *res) {
 
-inst:instaff ';';
-instaff:idf aff expr {remplire_cont_idf(&lisElts,$1,val2);non_dec(&lisElts,$1);};
-
-expr :  expr  padd  expr{
-        if($1.type==0 && $3.type==0){$$.type=0; $$.entier=$1.entier+$3.entier;val2.entier=$$.entier;}
-        if($1.type==1 && $3.type==1){$$.type=1; $$.reel=$1.reel+$3.reel;val2.real=$$.reel;}}|
-        expr  psous expr{   
-         if($1.type==0 && $3.type==0){$$.type=0; $$.entier=$1.entier-$3.entier;val2.entier=$$.entier;}
-         if($1.type==1 && $3.type==1){$$.type=1; $$.reel=$1.reel-$3.reel;val2.real=$$.reel;}}|
-        expr  pmul  expr{    
-        if($1.type==0 && $3.type==0){$$.type=0; $$.entier=$1.entier*$3.entier;val2.entier=$$.entier;}
-        if($1.type==0 && $3.type==1){$$.type=1; $$.reel=$1.reel*$3.reel;val2.real=$$.reel;}
-        if($1.type==1 && $3.type==0){printf("Erreur semantique:TYPE a la ligne [%d] et a la colonne [%d]\n\n",ligne,col);exit(-1);}  
-        if($1.type==1 && $3.type==1){$$.type=1; $$.reel=$1.reel*$3.reel;val2.real=$$.reel;}}|
-        expr  pdiv  expr{
-         if( $3.type==0){
-             if($3.entier==0){printf("Erreur semantique: Division par zero  a la ligne [%d] et a la colonne [%d]\n\n",ligne,col);exit(-1);} 
-             else{$$.type=0; $$.entier=$1.entier / $3.entier;val2.entier=$$.entier;}
-        }
-         if( $1.type==1 && ($3.type==1||$3.type==0)){
-                if($3.reel==0){printf("Erreur semantique: Division par zero  a la ligne [%d] et a la colonne [%d]\n\n",ligne,col);exit(-1);} 
-                else{$$.type=1; $$.reel=$1.reel / $3.reel;val2.real=$$.reel;}}
-        if( $1.type==1 && ($3.type==0)){
-                if($3.reel==0){printf("Erreur semantique: Division par zero  a la ligne [%d] et a la colonne [%d]\n\n",ligne,col);exit(-1);} 
-                else{$$.type=1; $$.reel=$1.reel / $3.reel;val2.real=$$.reel;}}
-        }|
-        reel {$$.reel=$1;$$.type=1; val2.real=$1;val2.type=1;}|
-        entier {$$.entier=$1;$$.type=0;val2.entier=$1;val2.type=0;}|
-        idf  {strcpy(val2.chaine,$1); }
-        
-;
-
-
-
-instiwf:instif|instw|instfor;
-
-instfor:pfor '(' idf ':' entier ':' entier ':' condarret ')' '{' partieinst '}';
-condarret:idf|entier;
-
-instif:pif '(' cond ')' '{' partieinst '}' |pif '('cond')''{' partieinst '}'pelse '{' partieinst '}';
-
-cond:idf c expr|idf c expr ou cond|idf c expr et cond |negation cond
-;
-c: psup | psupEgal |pequal| pinf | pinfEgal|pnotequal
-;
-
-instw:pwhile '(' cond ')' '{' partieinst '}';
-
-
-%%
-int yyerror(char* msg)
-{printf("%s ligne %d et colonne %d",msg,ligne,col);
-return 0;
+  if (qc >= MAX_QUADS) {
+    printf("Erreur : capacité de quadruplets dépassée.\n");
+    exit(EXIT_FAILURE);
+  }
+  
+  strcpy(quadruplets[qc].op, op);
+  strcpy(quadruplets[qc].arg1, arg1);
+  strcpy(quadruplets[qc].arg2, arg2);
+  strcpy(quadruplets[qc].res, res);
+  qc++;
 }
-int main()  {  
-yyparse();
-afficheidf(); 
-affiche(lisElts); 
-return 0;  
-} 
+
+void ajour_quad(int ligne, int champ, char *val) {
+  switch (champ) {
+    case 1:
+      strcpy(quadruplets[ligne].op, val);
+      break;
+    case 2:
+      strcpy(quadruplets[ligne].arg1, val);
+      break;
+    case 3:
+      strcpy(quadruplets[ligne].arg2, val);
+      break;
+    case 4:
+      strcpy(quadruplets[ligne].res, val);
+      break;
+    default:
+      printf("Erreur : champ de quadruplet invalide.\n");
+      exit(EXIT_FAILURE);
+  }
+}
+quadruplet* optimize_quads(quadruplet* quads,int num_quads) {
+      printf("%d",num_quads);
+    
+    int optimized = 1;
+    while (optimized) {
+        optimized = 0;
+        for (int i = 0; i < num_quads; i++) {
+              
+            quadruplet* q1 = &quads[i];
+            for (int j = i+1; j < num_quads; j++) {
+                
+                quadruplet* q2 = &quads[j];
+                // Propagation de copie
+                if (strcmp(q1->op, "=") == 0 && strcmp(q1->arg1, q2->res) == 0) {
+                  printf("propagation copie");
+                    strcpy(q2->res, q1->res);
+                    optimized = 1;
+                }
+                // Propagation d'expression
+                else if (strcmp(q1->op, q2->op) == 0 && strcmp(q1->arg1, q2->arg1) == 0
+                    && strcmp(q1->arg2, q2->arg2) == 0) {
+                  printf("Propagation d'expression");
+
+                    strcpy(q2->res, q1->res);
+                    optimized = 1;
+                }
+                // Élimination d'expressions redondantes
+                else if (strcmp(q1->res, q2->arg1) == 0 && strcmp(q1->op, q2->op) == 0) {
+                    strcpy(q2->arg1, q1->res);
+                    printf("Élimination d'expressions redondantes");
+                    
+                    optimized = 1;
+                }
+                // Simplification algébrique
+                else if (strcmp(q1->op, "+") == 0 && strcmp(q1->arg1, "0") == 0) {
+                    printf("Simplification algébrique");
+
+                    strcpy(q1->res, q1->arg2);
+                    strcpy(q2->arg1, q1->res);
+                    optimized = 1;
+                }
+                // Élimination de code inutile
+                else if (strcmp(q1->res, q2->arg1) == 0 && strcmp(q1->op, "=") == 0
+                    && strcmp(q2->op, "=") == 0) {
+                    printf("Élimination de code inutile");
+
+                    memmove(q2, q2+1, (num_quads-j)*sizeof(quadruplet));
+                    num_quads--;
+                    j--;
+                    optimized = 1;
+                }
+            }
+        }
+        quads = realloc(quads, num_quads*sizeof(quadruplet));
+            printf("\navant sortir");
+    }
+    printf("sortir");
+    return quads;
+}
+
+
+void affich_quad(){
+    for (int i = 0; i < sizeof(quadruplets) / sizeof(quadruplets[0]); i++){
+        if(strcmp(quadruplets[i].op, "") != 0 || 
+        strcmp(quadruplets[i].arg1, "") != 0 || 
+        strcmp(quadruplets[i].arg2, "") != 0 || 
+        strcmp(quadruplets[i].res, "") != 0) {
+        printf("\n %d - ( %s , %s , %s , %s )",i,quadruplets[i].op,quadruplets[i].arg1,quadruplets[i].arg2,quadruplets[i].res); 
+        }
+    }
+}
+

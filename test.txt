@@ -3,10 +3,11 @@ plus
 VAR{      
 INTEGER e;%%alger
 FLOAT x;   
-INTEGER z;         
+INTEGER z,f;         
 }
 CODE{
 x=5; 
+ 
 IF(x <= z){ 
  x=2; 
 }ELSE{
