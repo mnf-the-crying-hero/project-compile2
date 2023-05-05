@@ -82,24 +82,25 @@ void  Simplify(quadruplet* q1,int indice){
   char resb[20];
   char savet[20];
   strcpy(savet,q1->res);
-   
-  
-  if(isalpha(q1->arg1[0])){
-     quadruplet save[MAX_QUADS];
-    // copier les valeurs de quadruplets dans save
-    for (int i = 0; i < qc; i++){
-        save[i] = quadruplets[i];
-    }
- 
-    int max=atoi(q1->arg2);
-     sprintf(resb,"%s%d",q1->res,0);
+   int first=indice;
+  printf("%d",indice);
+        quadruplet save[MAX_QUADS];
+          // copier les valeurs de quadruplets dans save
+          for (int i = 0; i < qc; i++){
+              save[i] = quadruplets[i];
+          }
       
+          
+          sprintf(resb,"%s%d",q1->res,0);
+  if(isalpha(q1->arg1[0])){
+ 
+      int max=atoi(q1->arg2);
       strcpy(quadruplets[indice].op, "+");
       strcpy(quadruplets[indice].arg1,q1->arg1);
       strcpy(quadruplets[indice].arg2, q1->arg1);
       strcpy(quadruplets[indice].res, resb);
     for(int i=1;i<max-1;i++){
-      sprintf(res,"%s%d",q1->res,i);
+      sprintf(res, "%s%d%d", "T",first, i);
       indice++;
       strcpy(quadruplets[indice].op, "+");
       strcpy(quadruplets[indice].arg1, resb);
@@ -109,21 +110,46 @@ void  Simplify(quadruplet* q1,int indice){
 
 
 
-  // modifier les valeurs de quadruplets à partir de l'indice donné
-  for(int i=indice;i<qc;i++){
-      strcpy(quadruplets[i+max-1].op, save[i].op);
-      strcpy(quadruplets[i+max-1].arg1,save[i].arg1);
-      strcpy(quadruplets[i+max-1].arg2, save[i].arg2);
-      strcpy(quadruplets[i+max-1].res, save[i].res);
-  }
+    // modifier les valeurs de quadruplets à partir de l'indice donné
+        for(int i=first+1;i<qc;i++){
+            printf("%d%d",i,qc+max-2);
+            strcpy(quadruplets[i+max-2].op, save[i].op);
+            strcpy(quadruplets[i+max-2].arg1,save[i].arg1);
+            strcpy(quadruplets[i+max-2].arg2, save[i].arg2);
+            strcpy(quadruplets[i+max-2].res, save[i].res);
+        }
       
 
   }else if(isalpha(q1->arg2[0])){
-    int max=atoi(q1->arg2);
-    for(int i=0;i<max;i++){
-      sprintf(res,"%s%d",q1->res,i);
-      quadr("+", q1->arg1, q1->arg1, res);
-    }
+
+            int max=atoi(q1->arg1);
+            strcpy(quadruplets[indice].op, "+");
+            strcpy(quadruplets[indice].arg1,q1->arg2);
+            strcpy(quadruplets[indice].arg2, q1->arg2);
+            strcpy(quadruplets[indice].res, resb);
+          for(int i=1;i<max-1;i++){
+            printf("test");
+            sprintf(res, "%s%d%d", "T",first, i);
+            indice++;
+            strcpy(quadruplets[indice].op, "+");
+            strcpy(quadruplets[indice].arg1, resb);
+            strcpy(quadruplets[indice].arg2, q1->arg2);
+            strcpy(quadruplets[indice].res, res);
+            sprintf(resb, "%s%d%d", "T",first, i);
+          }
+
+
+
+        // modifier les valeurs de quadruplets à partir de l'indice donné
+    
+        for(int i=first+1;i<qc;i++){
+            printf("%d%d",i,qc+max-2);
+            strcpy(quadruplets[i+max-2].op, save[i].op);
+            strcpy(quadruplets[i+max-2].arg1,save[i].arg1);
+            strcpy(quadruplets[i+max-2].arg2, save[i].arg2);
+            strcpy(quadruplets[i+max-2].res, save[i].res);
+        }
+          
   }
 }
 
@@ -132,9 +158,10 @@ quadruplet* optimize_quads(quadruplet* quads,int num_quads) {
     
     int optimized = 1;
     while (optimized) {
+        optimized = 0; 
         
         for (int i = 0; i < num_quads; i++) {
-           optimized = 0;
+            
             quadruplet* q1 = &quads[i];
             for (int j = i+1; j < num_quads; j++) {
                 
@@ -174,13 +201,13 @@ quadruplet* optimize_quads(quadruplet* quads,int num_quads) {
                       
                       optimized = 1;
                   }
-                // Simplification algébrique
-                  else if (strcmp(q1->op, "*") == 0 && ((atoi(q1->arg1) && isalpha(q1->arg2[0])) || (atoi(q1->arg2) && isalpha(q1->arg1[0])))) {
+                // Simplification algébrique             
+                  else if (strcmp(q1->op, "*") == 0 && ((atoi(q1->arg1) && isalpha(q1->arg2[0])) || (atoi(q1->arg2) && isalpha(q1->arg1[0])) ) ) {
                       printf("Simplification algebrique\n");
 
                       Simplify(q1,i);
                       optimized = 1;
-                  }
+                  } 
                 // Élimination de code inutile
                 else if (strcmp(q1->res, q2->arg1) == 0 && strcmp(q1->op, "=") == 0
                     && strcmp(q2->op, "=") == 0) {
@@ -192,11 +219,11 @@ quadruplet* optimize_quads(quadruplet* quads,int num_quads) {
                     optimized = 1;
                 }
             }
-            
+             
         }
-        quads = realloc(quads, num_quads*sizeof(quadruplet));
-            printf("\navant sortir");
-        
+    
+         
+           
     }
     
     return quads;
