@@ -6,7 +6,12 @@ CONST INTEGER t = 1;
 FLOAT x; 
 
 INTEGER i; %%FLOAT i;  
-INTEGER z,f,A[2];         
+INTEGER z,f,A[2]; 
+STRUCT { 
+ INTEGER F1; 
+ FLOAT x2 ;  
+ } NomStructure ; 
+        
 }
 CODE{
 z=1-(-3);
