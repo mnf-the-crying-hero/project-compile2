@@ -1,0 +1,10 @@
+plus
+{
+VAR{      
+INTEGER j,a,m,b,n,x,A[x];          
+}
+CODE{
+j=5; 
+ 
+}
+}

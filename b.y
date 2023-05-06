@@ -83,7 +83,8 @@ PARTIEDEC: PARTIEDEC pint LISTEVARIABLE ';' {remplire(&lisElts,0,0,0);}|
             ;
 STRUCTURE: pstruct '{' PARTIEDEC '}' idf ';'
 	        ;
-LISTEVARIABLE:idf {inserer($1);}|idf ',' LISTEVARIABLE {inserer($1);}|idf '[' entier ']'{sprintf(savetab,"%s[%d]",$1,$3); inserer(savetab);}
+LISTEVARIABLE:idf {inserer($1);}|idf ',' LISTEVARIABLE {inserer($1);}|idf '[' entier ']'{sprintf(savetab,"%s[%d]",$1,$3); inserer(savetab);}|idf '[' idf ']'{sprintf(savetab,"%s[%s]",$1,$3); inserer(savetab);}
+;
 
 PARTIEINST:x|x PARTIEINST;
 x:inst|INSTIWF;
@@ -142,14 +143,25 @@ expr :  expr  padd  expr {
                         sprintf(tmp,"%d", $1);
                         sprintf(tmp2,"%d", $3);
                         quadr("+",tmp,tmp2,res);
-                }else{
+                }else if ($1.type==1 && $3.type==1){
                       
                         $$.type = 1;
                         sprintf(tmp,"%.02f", $1);
                         sprintf(tmp2,"%.02f", $3);
                         quadr("+",tmp,tmp2,res); 
+                }else if($1.type==0 && $3.type==1){
+                        $$.type = 1; 
+                                
+                        sprintf(tmp,"%d", $1.entier);
+                        sprintf(tmp2,"%.02f", $3.reel);
+                        quadr("+",tmp,tmp2,res);
+                }else if($1.type==1 && $3.type==0){
+                        $$.type = 1; 
+                        
+                        sprintf(tmp,"%.02f", $1.reel);
+                        sprintf(tmp2,"%d", $3.entier);
+                        quadr("+",tmp,tmp2,res);
                 }
-                //printf("%s",res);
              
                  
         }else   if($1.name==NULL){
