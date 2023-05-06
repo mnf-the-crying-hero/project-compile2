@@ -53,7 +53,10 @@ FLOAT {col=col+yyleng;return pfloat;}
 
 {FLOAT} {col=col+yyleng; yylval.flt =atof(yytext); return reel; }
 {aff} {col=col+yyleng; return aff;}
-{IDF} { col=col+yyleng; yylval.str=strdup(yytext);return idf;}
+{IDF} { if(yyleng <= 8){col=col+yyleng; yylval.str=strdup(yytext);return idf;}else{
+        printf("erreur lexical, ligne %d, colonne %d, erreur : %s ", ligne, col, yytext);
+
+}}
 
 "+" { col=col+yyleng;return padd ;}
 "-" { col=col+yyleng;return psous ;}

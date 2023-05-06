@@ -10,7 +10,7 @@ INTEGER z,f,A[2];
 STRUCT { 
  INTEGER F1; 
  FLOAT x2 ;  
- } NomStructure ; 
+ } Nom ; 
         
 }
 CODE{

@@ -771,144 +771,147 @@ YY_RULE_SETUP
 case 14:
 YY_RULE_SETUP
 #line 56 "b.l"
-{ col=col+yyleng; yylval.str=strdup(yytext);return idf;}
+{ if(yyleng <= 8){col=col+yyleng; yylval.str=strdup(yytext);return idf;}else{
+        printf("erreur lexical, ligne %d, colonne %d, erreur : %s ", ligne, col, yytext);
+
+}}
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 58 "b.l"
+#line 61 "b.l"
 { col=col+yyleng;return padd ;}
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 59 "b.l"
+#line 62 "b.l"
 { col=col+yyleng;return psous ;}
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
-#line 60 "b.l"
+#line 63 "b.l"
 {col=col+yyleng;return pmul; }
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
-#line 61 "b.l"
+#line 64 "b.l"
 {col=col+yyleng;return pdiv;}
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
-#line 64 "b.l"
+#line 67 "b.l"
 {col++;return ')';}
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
-#line 65 "b.l"
+#line 68 "b.l"
 {col++;return '(';}
 	YY_BREAK
 case 21:
 YY_RULE_SETUP
-#line 66 "b.l"
+#line 69 "b.l"
 {col++;return '[';}
 	YY_BREAK
 case 22:
 YY_RULE_SETUP
-#line 67 "b.l"
+#line 70 "b.l"
 {col++;return ']';}
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
-#line 68 "b.l"
+#line 71 "b.l"
 {col++;return '{';}
 	YY_BREAK
 case 24:
 YY_RULE_SETUP
-#line 69 "b.l"
+#line 72 "b.l"
 {col++;return '}';}
 	YY_BREAK
 case 25:
 YY_RULE_SETUP
-#line 71 "b.l"
+#line 74 "b.l"
 {col=col+yyleng;return psup;}
 	YY_BREAK
 case 26:
 YY_RULE_SETUP
-#line 72 "b.l"
+#line 75 "b.l"
 {col=col+yyleng;return psupEgal;}
 	YY_BREAK
 case 27:
 YY_RULE_SETUP
-#line 73 "b.l"
+#line 76 "b.l"
 {col=col+yyleng;return pinf;}
 	YY_BREAK
 case 28:
 YY_RULE_SETUP
-#line 74 "b.l"
+#line 77 "b.l"
 {col=col+yyleng;return pinfEgal;}
 	YY_BREAK
 case 29:
 YY_RULE_SETUP
-#line 75 "b.l"
+#line 78 "b.l"
 {col=col+yyleng;return pequal;}
 	YY_BREAK
 case 30:
 YY_RULE_SETUP
-#line 76 "b.l"
+#line 79 "b.l"
 {col=col+yyleng;return pnotequal;}
 	YY_BREAK
 case 31:
 YY_RULE_SETUP
-#line 77 "b.l"
+#line 80 "b.l"
 { col=col+yyleng;return ou ;}
 	YY_BREAK
 case 32:
 YY_RULE_SETUP
-#line 78 "b.l"
+#line 81 "b.l"
 { col=col+yyleng;return  et;}
 	YY_BREAK
 case 33:
 YY_RULE_SETUP
-#line 79 "b.l"
+#line 82 "b.l"
 {col=col+yyleng;return negation;}
 	YY_BREAK
 case 34:
 YY_RULE_SETUP
-#line 81 "b.l"
+#line 84 "b.l"
 {col=col+yyleng;return ',';}
 	YY_BREAK
 case 35:
 YY_RULE_SETUP
-#line 82 "b.l"
+#line 85 "b.l"
 {col=col+yyleng;return ':';}
 	YY_BREAK
 case 36:
 YY_RULE_SETUP
-#line 83 "b.l"
+#line 86 "b.l"
 
 	YY_BREAK
 case 37:
 YY_RULE_SETUP
-#line 84 "b.l"
+#line 87 "b.l"
 {col++;return ';';}
 	YY_BREAK
 case 38:
 YY_RULE_SETUP
-#line 85 "b.l"
+#line 88 "b.l"
 col+=yyleng;
 	YY_BREAK
 case 39:
 YY_RULE_SETUP
-#line 86 "b.l"
+#line 89 "b.l"
 {ligne++;col=1;}
 	YY_BREAK
 case 40:
 YY_RULE_SETUP
-#line 87 "b.l"
+#line 90 "b.l"
 {printf("Erreur lexical la ligne %d et colonne %d \n",ligne,col);}	
 	YY_BREAK
 case 41:
 YY_RULE_SETUP
-#line 89 "b.l"
+#line 92 "b.l"
 ECHO;
 	YY_BREAK
-#line 912 "lex.yy.c"
+#line 915 "lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -1794,7 +1797,7 @@ int main()
 	return 0;
 	}
 #endif
-#line 89 "b.l"
+#line 92 "b.l"
 
 int yywrap(void)
 {
