@@ -76,7 +76,7 @@ typedef union YYSTYPE
 {
 
 /* Line 1676 of yacc.c  */
-#line 42 "b.y"
+#line 43 "b.y"
 
 char* operCond;
 int num;

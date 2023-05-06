@@ -72,13 +72,14 @@
 
 #include<stdio.h>
 #include "bib.h"
+#include <math.h>
 #include "hash_table.c"
 #include "quad.c"
 //quadruple variable
 int deb_else=0;
 int deb_if=0;
 int qc=0;
- 
+
 int Fin_if=0;
 int finInst1=0;
 int finInst2=0;
@@ -87,7 +88,7 @@ int save_bg=0;
 int deb_while=0;
 int deb_for=0;
 noeud* p;
-
+char savetab [20];
 char tmp [20];
 char tmp2 [20];
 char res [1000];
@@ -111,7 +112,7 @@ extern FILE* yyin;
 
 
 /* Line 189 of yacc.c  */
-#line 115 "b.tab.c"
+#line 116 "b.tab.c"
 
 /* Enabling traces.  */
 #ifndef YYDEBUG
@@ -175,7 +176,7 @@ typedef union YYSTYPE
 {
 
 /* Line 214 of yacc.c  */
-#line 42 "b.y"
+#line 43 "b.y"
 
 char* operCond;
 int num;
@@ -193,7 +194,7 @@ char* name;
 
 
 /* Line 214 of yacc.c  */
-#line 197 "b.tab.c"
+#line 198 "b.tab.c"
 } YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
@@ -205,7 +206,7 @@ char* name;
 
 
 /* Line 264 of yacc.c  */
-#line 209 "b.tab.c"
+#line 210 "b.tab.c"
 
 #ifdef short
 # undef short
@@ -514,12 +515,12 @@ static const yytype_int8 yyrhs[] =
 /* YYRLINE[YYN] -- source line where rule number YYN was defined.  */
 static const yytype_uint16 yyrline[] =
 {
-       0,    72,    72,    72,    75,    76,    77,    78,    79,    80,
-      83,    85,    85,    85,    87,    87,    88,    88,    90,    91,
-     130,   185,   238,   289,   340,   341,   342,   348,   355,   355,
-     355,   357,   357,   358,   365,   380,   388,   398,   416,   426,
-     439,   447,   455,   460,   464,   465,   466,   469,   469,   469,
-     469,   469,   469,   473,   481,   486
+       0,    73,    73,    73,    76,    77,    78,    79,    80,    81,
+      84,    86,    86,    86,    88,    88,    89,    89,    91,    92,
+     135,   189,   252,   303,   364,   365,   366,   372,   379,   379,
+     379,   381,   381,   382,   389,   404,   412,   422,   440,   450,
+     463,   471,   479,   484,   488,   489,   490,   493,   493,   493,
+     493,   493,   493,   497,   505,   510
 };
 #endif
 
@@ -1499,72 +1500,76 @@ yyreduce:
         case 2:
 
 /* Line 1455 of yacc.c  */
-#line 72 "b.y"
+#line 73 "b.y"
     {th = init_table(TAILLE_TABLE);transformer_tsToth(lisElts,th);;}
     break;
 
   case 3:
 
 /* Line 1455 of yacc.c  */
-#line 72 "b.y"
+#line 73 "b.y"
     { printf ("programme syntaxiquement juste"); YYACCEPT ;;}
     break;
 
   case 4:
 
 /* Line 1455 of yacc.c  */
-#line 75 "b.y"
+#line 76 "b.y"
     {remplire(&lisElts,0,0,0);;}
     break;
 
   case 5:
 
 /* Line 1455 of yacc.c  */
-#line 76 "b.y"
+#line 77 "b.y"
     {remplire(&lisElts,0,1,0);;}
     break;
 
   case 6:
 
 /* Line 1455 of yacc.c  */
-#line 77 "b.y"
+#line 78 "b.y"
     {remplire(&lisElts,1,0,(yyvsp[(6) - (7)].num));;}
     break;
 
   case 7:
 
 /* Line 1455 of yacc.c  */
-#line 78 "b.y"
+#line 79 "b.y"
     {remplire(&lisElts,1,1,(yyvsp[(6) - (7)].flt));;}
     break;
 
   case 11:
 
 /* Line 1455 of yacc.c  */
-#line 85 "b.y"
+#line 86 "b.y"
     {inserer((yyvsp[(1) - (1)].str));;}
     break;
 
   case 12:
 
 /* Line 1455 of yacc.c  */
-#line 85 "b.y"
+#line 86 "b.y"
     {inserer((yyvsp[(1) - (3)].str));;}
     break;
 
   case 13:
 
 /* Line 1455 of yacc.c  */
-#line 85 "b.y"
-    {inserer((yyvsp[(1) - (4)].str));;}
+#line 86 "b.y"
+    {sprintf(savetab,"%s[%d]",(yyvsp[(1) - (4)].str),(yyvsp[(3) - (4)].num)); inserer(savetab);;}
     break;
 
   case 19:
 
 /* Line 1455 of yacc.c  */
-#line 91 "b.y"
+#line 92 "b.y"
     {
+        //printf("%d=%d",recherche_type(&lisElts,$1),$3.type);
         remplire_cont_idf(&lisElts,(yyvsp[(1) - (3)].str),val2);non_dec(&lisElts,(yyvsp[(1) - (3)].str)); 
+        if(recherche_type(&lisElts,(yyvsp[(1) - (3)].str))!=(yyvsp[(3) - (3)].Col).type){
+           printf("Erreur semantique: Incompatibilite Type  a la ligne [%d] et a la colonne [%d]\n\n",ligne,col);exit(-1);     
+        }
         if((yyvsp[(3) - (3)].Col).name==NULL){
                 if((yyvsp[(3) - (3)].Col).type==0){
                         
@@ -1604,11 +1609,9 @@ yyreduce:
   case 20:
 
 /* Line 1455 of yacc.c  */
-#line 130 "b.y"
+#line 135 "b.y"
     {     
-        if((yyvsp[(1) - (3)].Col).type!=(yyvsp[(3) - (3)].Col).type){
-                printf("Erreur semantique: Incompatibilite Type  a la ligne [%d] et a la colonne [%d]\n\n",ligne,col);exit(-1);     
-        }        
+       
         sprintf(res,"T%d", qc);
         if((yyvsp[(1) - (3)].Col).name==NULL && (yyvsp[(3) - (3)].Col).name==NULL){
                
@@ -1624,7 +1627,7 @@ yyreduce:
                         sprintf(tmp2,"%.02f", (yyvsp[(3) - (3)].Col));
                         quadr("+",tmp,tmp2,res); 
                 }
-                printf("%s",res);
+                //printf("%s",res);
              
                  
         }else   if((yyvsp[(1) - (3)].Col).name==NULL){
@@ -1657,6 +1660,7 @@ yyreduce:
                 }
                 (yyval.Col).name = (char*) malloc(20);
                 strcpy((yyval.Col).name,res);
+             
 
        // strcpy($$.name, tmp);
         ;}
@@ -1665,150 +1669,170 @@ yyreduce:
   case 21:
 
 /* Line 1455 of yacc.c  */
-#line 185 "b.y"
+#line 189 "b.y"
     {
-        if((yyvsp[(1) - (3)].Col).type!=(yyvsp[(3) - (3)].Col).type){
-                printf("Erreur semantique: Incompatibilite Type  a la ligne [%d] et a la colonne [%d]\n\n",ligne,col);exit(-1);     
-        }
-        sprintf(res,"T%d", qc);
-        if((yyvsp[(1) - (3)].Col).name==NULL && (yyvsp[(3) - (3)].Col).name==NULL){
-             
-                if((yyvsp[(1) - (3)].Col).type==0 && (yyvsp[(1) - (3)].Col).type==0){
-                        (yyval.Col).type = 0; // initialiser le type de la nouvelle expression à entier
+     
+                sprintf(res,"T%d", qc);
+                if((yyvsp[(1) - (3)].Col).name==NULL && (yyvsp[(3) - (3)].Col).name==NULL){
+                
+                        if((yyvsp[(1) - (3)].Col).type==0 && (yyvsp[(3) - (3)].Col).type==0){
+                                (yyval.Col).type = 0; // initialiser le type de la nouvelle expression à entier
+                                
+                                sprintf(tmp,"%d", (yyvsp[(1) - (3)].Col).entier);
+                                sprintf(tmp2,"%d", (yyvsp[(3) - (3)].Col).entier);
+                                quadr("-",tmp,tmp2,res);
+                        }else if((yyvsp[(1) - (3)].Col).type==1 && (yyvsp[(3) - (3)].Col).type==1){
+                                (yyval.Col).type = 1; // initialiser le type de la nouvelle expression à entier
+                                
+                                sprintf(tmp,"%.02f", (yyvsp[(1) - (3)].Col).reel);
+                                sprintf(tmp2,"%.02f", (yyvsp[(3) - (3)].Col).reel);
+                                quadr("-",tmp,tmp2,res); 
+                        }else if((yyvsp[(1) - (3)].Col).type==0 && (yyvsp[(3) - (3)].Col).type==1){
+                                (yyval.Col).type = 1; 
+                                 
+                                sprintf(tmp,"%d", (yyvsp[(1) - (3)].Col).entier);
+                                sprintf(tmp2,"%.02f", (yyvsp[(3) - (3)].Col).reel);
+                                quadr("-",tmp,tmp2,res);
+                        }else if((yyvsp[(1) - (3)].Col).type==1 && (yyvsp[(3) - (3)].Col).type==0){
+                                (yyval.Col).type = 1; 
+                               
+                                sprintf(tmp,"%.02f", (yyvsp[(1) - (3)].Col).reel);
+                                sprintf(tmp2,"%d", (yyvsp[(3) - (3)].Col).entier);
+                                quadr("-",tmp,tmp2,res);
+                        }
+                                
+                
+                }else   if((yyvsp[(1) - (3)].Col).name==NULL){
                         
-                        sprintf(tmp,"%d", (yyvsp[(1) - (3)].Col).entier);
-                        sprintf(tmp2,"%d", (yyvsp[(3) - (3)].Col).entier);
-                        quadr("-",tmp,tmp2,res);
-                }else{
-                        (yyval.Col).type = 1; // initialiser le type de la nouvelle expression à entier
+                                if((yyvsp[(1) - (3)].Col).type==0){
+                                sprintf(tmp,"%d", (yyvsp[(1) - (3)].Col));
+                                quadr("-",tmp,(yyvsp[(3) - (3)].Col).name,res); 
+                                }else{
+                                sprintf(tmp,"%.02f", (yyvsp[(3) - (3)].Col));
+                                quadr("-",tmp,(yyvsp[(3) - (3)].Col).name,res); 
+                                }
+                                (yyval.Col).name = (char*) malloc(20);
+                                strcpy((yyval.Col).name,res);
+                        }else if((yyvsp[(3) - (3)].Col).name==NULL){
+                                
                         
-                        sprintf(tmp,"%.02f", (yyvsp[(1) - (3)].Col).reel);
-                        sprintf(tmp2,"%.02f", (yyvsp[(3) - (3)].Col).reel);
-                        quadr("-",tmp,tmp2,res); 
-                }
-                           
-               
-        }else   if((yyvsp[(1) - (3)].Col).name==NULL){
-                       
-                        if((yyvsp[(1) - (3)].Col).type==0){
-                        sprintf(tmp,"%d", (yyvsp[(1) - (3)].Col));
-                        quadr("-",tmp,(yyvsp[(3) - (3)].Col).name,res); 
+                                if((yyvsp[(3) - (3)].Col).type==0){
+                                sprintf(tmp,"%d",(yyvsp[(3) - (3)].Col));
+                                quadr("-",(yyvsp[(1) - (3)].Col).name,tmp,res); 
+                                }else{
+                                sprintf(tmp,"%.02f", (yyvsp[(3) - (3)].Col));
+                                quadr("-",(yyvsp[(1) - (3)].Col).name,tmp,res); 
+                                }  
+                                (yyval.Col).name = (char*) malloc(20);
+                                strcpy((yyval.Col).name,res);
                         }else{
-                        sprintf(tmp,"%.02f", (yyvsp[(3) - (3)].Col));
-                        quadr("-",tmp,(yyvsp[(3) - (3)].Col).name,res); 
+                        
+                                quadr("-",(yyvsp[(1) - (3)].Col).name,(yyvsp[(3) - (3)].Col).name,res); 
                         }
                         (yyval.Col).name = (char*) malloc(20);
-                        strcpy((yyval.Col).name,res);
-                }else if((yyvsp[(3) - (3)].Col).name==NULL){
-                         
-                       
-                        if((yyvsp[(3) - (3)].Col).type==0){
-                        sprintf(tmp,"%d",(yyvsp[(3) - (3)].Col));
-                        quadr("-",(yyvsp[(1) - (3)].Col).name,tmp,res); 
-                        }else{
-                        sprintf(tmp,"%.02f", (yyvsp[(3) - (3)].Col));
-                        quadr("-",(yyvsp[(1) - (3)].Col).name,tmp,res); 
-                        }  
-                        (yyval.Col).name = (char*) malloc(20);
-                        strcpy((yyval.Col).name,res);
-                }else{
-                   
-                        quadr("-",(yyvsp[(1) - (3)].Col).name,(yyvsp[(3) - (3)].Col).name,res); 
-                }
-                (yyval.Col).name = (char*) malloc(20);
-                strcpy((yyval.Col).name,res); 
+                        strcpy((yyval.Col).name,res); 
 
-        ;}
+                ;}
     break;
 
   case 22:
 
 /* Line 1455 of yacc.c  */
-#line 238 "b.y"
+#line 252 "b.y"
     {
-        if((yyvsp[(1) - (3)].Col).type!=(yyvsp[(3) - (3)].Col).type){
-           printf("Erreur semantique: Incompatibilite Type  a la ligne [%d] et a la colonne [%d]\n\n",ligne,col);exit(-1);     
-        }
-        sprintf(res,"T%d", qc);
-        if((yyvsp[(1) - (3)].Col).name==NULL && (yyvsp[(3) - (3)].Col).name==NULL){
-                
-                if((yyvsp[(1) - (3)].Col).type==0 && (yyvsp[(1) - (3)].Col).type==0){
-                        (yyval.Col).type = 0; // initialiser le type de la nouvelle expression à entier
-                        
-                        sprintf(tmp,"%d", (yyvsp[(1) - (3)].Col).entier);
-                        sprintf(tmp2,"%d", (yyvsp[(3) - (3)].Col).entier);
-                        quadr("*",tmp,tmp2,res);
-                }else{
-                        (yyval.Col).type = 1; // initialiser le type de la nouvelle expression à entier
-                         
-                        sprintf(tmp,"%.02f", (yyvsp[(1) - (3)].Col).reel);
-                        sprintf(tmp2,"%.02f", (yyvsp[(3) - (3)].Col).reel);
-                        quadr("*",tmp,tmp2,res); 
+                if((yyvsp[(1) - (3)].Col).type!=(yyvsp[(3) - (3)].Col).type){
+                printf("Erreur semantique: Incompatibilite Type  a la ligne [%d] et a la colonne [%d]\n\n",ligne,col);exit(-1);     
                 }
-                  
-              
-        }else   if((yyvsp[(1) - (3)].Col).name==NULL){
+                sprintf(res,"T%d", qc);
+                if((yyvsp[(1) - (3)].Col).name==NULL && (yyvsp[(3) - (3)].Col).name==NULL){
                         
-                        if((yyvsp[(1) - (3)].Col).type==0){
-                        sprintf(tmp,"%d", (yyvsp[(1) - (3)].Col));
-                        quadr("*",tmp,(yyvsp[(3) - (3)].Col).name,res); 
+                        if((yyvsp[(1) - (3)].Col).type==0 && (yyvsp[(1) - (3)].Col).type==0){
+                                (yyval.Col).type = 0; // initialiser le type de la nouvelle expression à entier
+                                
+                                sprintf(tmp,"%d", (yyvsp[(1) - (3)].Col).entier);
+                                sprintf(tmp2,"%d", (yyvsp[(3) - (3)].Col).entier);
+                                quadr("*",tmp,tmp2,res);
                         }else{
-                        sprintf(tmp,"%.02f", (yyvsp[(3) - (3)].Col));
-                        quadr("*",tmp,(yyvsp[(3) - (3)].Col).name,res); 
+                                (yyval.Col).type = 1; // initialiser le type de la nouvelle expression à entier
+                                
+                                sprintf(tmp,"%.02f", (yyvsp[(1) - (3)].Col).reel);
+                                sprintf(tmp2,"%.02f", (yyvsp[(3) - (3)].Col).reel);
+                                quadr("*",tmp,tmp2,res); 
                         }
-                    
-                }else if((yyvsp[(3) - (3)].Col).name==NULL){
-                         
-                         
-                        if((yyvsp[(3) - (3)].Col).type==0){
-                        sprintf(tmp,"%d",(yyvsp[(3) - (3)].Col));
-                        quadr("*",(yyvsp[(1) - (3)].Col).name,tmp,res); 
-                        }else{
-                        sprintf(tmp,"%.02f", (yyvsp[(3) - (3)].Col));
-                        quadr("*",(yyvsp[(1) - (3)].Col).name,tmp,res); 
-                        }  
                         
-                }else{
-                         
-                        quadr("*",(yyvsp[(1) - (3)].Col).name,(yyvsp[(3) - (3)].Col).name,res);   
-                }
-                (yyval.Col).name = (char*) malloc(20);
-                strcpy((yyval.Col).name,res);
+                
+                }else   if((yyvsp[(1) - (3)].Col).name==NULL){
+                                
+                                if((yyvsp[(1) - (3)].Col).type==0){
+                                sprintf(tmp,"%d", (yyvsp[(1) - (3)].Col));
+                                quadr("*",tmp,(yyvsp[(3) - (3)].Col).name,res); 
+                                }else{
+                                sprintf(tmp,"%.02f", (yyvsp[(3) - (3)].Col));
+                                quadr("*",tmp,(yyvsp[(3) - (3)].Col).name,res); 
+                                }
+                        
+                        }else if((yyvsp[(3) - (3)].Col).name==NULL){
+                                
+                                
+                                if((yyvsp[(3) - (3)].Col).type==0){
+                                sprintf(tmp,"%d",(yyvsp[(3) - (3)].Col));
+                                quadr("*",(yyvsp[(1) - (3)].Col).name,tmp,res); 
+                                }else{
+                                sprintf(tmp,"%.02f", (yyvsp[(3) - (3)].Col));
+                                quadr("*",(yyvsp[(1) - (3)].Col).name,tmp,res); 
+                                }  
+                                
+                        }else{
+                                
+                                quadr("*",(yyvsp[(1) - (3)].Col).name,(yyvsp[(3) - (3)].Col).name,res);   
+                        }
+                        (yyval.Col).name = (char*) malloc(20);
+                        strcpy((yyval.Col).name,res);
 
-        ;}
+                ;}
     break;
 
   case 23:
 
 /* Line 1455 of yacc.c  */
-#line 289 "b.y"
+#line 303 "b.y"
     {
-        //printf("%d alger%d",$1.type,$3.entier);
+        //printf("%d div %d",$1.type,$3.entier);
 
-        if((yyvsp[(1) - (3)].Col).type!=(yyvsp[(3) - (3)].Col).type){
+        /*if($1.type!=$3.type){
            printf("Erreur semantique: Incompatibilite Type  a la ligne [%d] et a la colonne [%d]\n\n",ligne,col);exit(-1);     
-        }
+        }*/
         sprintf(res,"T%d", qc);
         if((yyvsp[(3) - (3)].Col).entier!=0 || (yyvsp[(3) - (3)].Col).reel!=0){
+                (yyval.Col).type = 1;
                 if((yyvsp[(1) - (3)].Col).name==NULL && (yyvsp[(3) - (3)].Col).name==NULL){
                 
-                                
+                                         
                                 if((yyvsp[(1) - (3)].Col).type==0 && (yyvsp[(1) - (3)].Col).type==0){
-                                        (yyval.Col).type = 0; // initialiser le type de la nouvelle expression à entier
+                                        if((yyvsp[(1) - (3)].Col).entier%(yyvsp[(3) - (3)].Col).entier==0){
+                                                (yyval.Col).type = 0; // initialiser le type de la nouvelle expression à entier
+                                        }
                                         sprintf(tmp,"%d", (yyvsp[(1) - (3)].Col).entier);
                                         sprintf(tmp2,"%d", (yyvsp[(3) - (3)].Col).entier);
                                         quadr("/",tmp,tmp2,res);  
                                 }else{
-                                        (yyval.Col).type = 1; // initialiser le type de la nouvelle expression à entier
+                                        int a = round((yyvsp[(1) - (3)].Col).reel * 100);    
+                                        int b = round((yyvsp[(3) - (3)].Col).reel* 100);    
+                                        if (a % b == 0) {
+                                          (yyval.Col).type = 0;
+                                        }
+
+                                      
                                         sprintf(tmp,"%.02f", (yyvsp[(1) - (3)].Col).reel);
                                         sprintf(tmp2,"%.02f", (yyvsp[(3) - (3)].Col).reel);
-                                        printf("%s",tmp);
+                                        //printf("%s",tmp);
                                         quadr("/",tmp,tmp2,res); 
                                 }  
                                    
                 }else   if((yyvsp[(1) - (3)].Col).name==NULL){
                                  
                                 if((yyvsp[(1) - (3)].Col).type==0){
+                                
                                 sprintf(tmp,"%d", (yyvsp[(1) - (3)].Col));
                                 quadr("/",tmp,(yyvsp[(3) - (3)].Col).name,res); 
                                 }else{
@@ -1838,33 +1862,33 @@ yyreduce:
   case 24:
 
 /* Line 1455 of yacc.c  */
-#line 340 "b.y"
+#line 364 "b.y"
     {(yyval.Col) = (yyvsp[(2) - (3)].Col);;}
     break;
 
   case 25:
 
 /* Line 1455 of yacc.c  */
-#line 341 "b.y"
+#line 365 "b.y"
     {(yyval.Col).name = strdup((yyvsp[(1) - (1)].str));;}
     break;
 
   case 26:
 
 /* Line 1455 of yacc.c  */
-#line 342 "b.y"
+#line 366 "b.y"
     {
                 (yyval.Col).type = 0; // initialiser le type de la nouvelle expression à entier
                 (yyval.Col).entier=(yyvsp[(1) - (1)].num);
-                
-                
+          
+           
         ;}
     break;
 
   case 27:
 
 /* Line 1455 of yacc.c  */
-#line 348 "b.y"
+#line 372 "b.y"
     {
                 (yyval.Col).type = 1; // initialiser le type de la nouvelle expression à réel
                   (yyval.Col).reel=(yyvsp[(1) - (1)].flt);
@@ -1875,21 +1899,21 @@ yyreduce:
   case 31:
 
 /* Line 1455 of yacc.c  */
-#line 357 "b.y"
+#line 381 "b.y"
     {(yyval.Col).name=(yyvsp[(1) - (1)].str);}
     break;
 
   case 32:
 
 /* Line 1455 of yacc.c  */
-#line 357 "b.y"
+#line 381 "b.y"
     {(yyval.Col).entier=(yyvsp[(1) - (1)].num);}
     break;
 
   case 33:
 
 /* Line 1455 of yacc.c  */
-#line 359 "b.y"
+#line 383 "b.y"
     {       sprintf(tmp,"%d", deb_for);
                 quadr("BR",tmp,"vide","vide"); 
                 sprintf(tmp2,"%d", qc);
@@ -1900,7 +1924,7 @@ yyreduce:
   case 34:
 
 /* Line 1455 of yacc.c  */
-#line 365 "b.y"
+#line 389 "b.y"
     {
         save_bg=qc;
         sprintf(tmp,"T%d", qc);
@@ -1920,7 +1944,7 @@ yyreduce:
   case 35:
 
 /* Line 1455 of yacc.c  */
-#line 380 "b.y"
+#line 404 "b.y"
     {
         deb_for=qc;
         sprintf(res,"T%d", qc);
@@ -1933,10 +1957,10 @@ yyreduce:
   case 36:
 
 /* Line 1455 of yacc.c  */
-#line 388 "b.y"
+#line 412 "b.y"
     {
      if((yyvsp[(1) - (3)].Col).type!=0){
-        printf("Error Symantique:%d pas compatible la ligne [%d] et a la colonne [%d]\n",ligne,col);exit(-1);
+        printf("Error Symantique:%s pas compatible la ligne [%d] et a la colonne [%d]\n",(yyvsp[(1) - (3)].Col).name,ligne,col);exit(-1);
      }else{
         sprintf(tmp,"%d",(yyvsp[(3) - (3)].num)); 
         quadr("=",tmp,"vide",(yyvsp[(1) - (3)].Col).name);
@@ -1948,14 +1972,14 @@ yyreduce:
   case 37:
 
 /* Line 1455 of yacc.c  */
-#line 398 "b.y"
+#line 422 "b.y"
     {
-        printf("ddd%s",(yyvsp[(3) - (3)].str));
-        printf("dd%lu",th);
+        //printf("ddd%s",$3);
+        //printf("dd%lu",th);
         p=lookup((yyvsp[(3) - (3)].str),th);
      
         if(p==NULL){
-                printf("Error Symantique:%d non declareea la ligne [%d] et a la colonne [%d]\n",(yyvsp[(3) - (3)].str),ligne,col);exit(-1);
+                printf("Error Symantique:%s non declareea la ligne [%d] et a la colonne [%d]\n",(yyvsp[(3) - (3)].str),ligne,col);exit(-1);
         }else{
 
                 (yyval.Col).type=p->type;
@@ -1969,7 +1993,7 @@ yyreduce:
   case 38:
 
 /* Line 1455 of yacc.c  */
-#line 416 "b.y"
+#line 440 "b.y"
     {
         sprintf(tmp,"%d",qc); 
         ajour_quad(finInst1,2,tmp);
@@ -1985,7 +2009,7 @@ yyreduce:
   case 39:
 
 /* Line 1455 of yacc.c  */
-#line 427 "b.y"
+#line 451 "b.y"
     {
 
         sprintf(tmp,"%d",qc); 
@@ -2002,7 +2026,7 @@ yyreduce:
   case 40:
 
 /* Line 1455 of yacc.c  */
-#line 440 "b.y"
+#line 464 "b.y"
     {     
         finInst1=qc; 
  
@@ -2014,7 +2038,7 @@ yyreduce:
   case 41:
 
 /* Line 1455 of yacc.c  */
-#line 448 "b.y"
+#line 472 "b.y"
     {     
         finInst1=qc; 
         quadr("BR", "","vide","vide"); 
@@ -2026,7 +2050,7 @@ yyreduce:
   case 42:
 
 /* Line 1455 of yacc.c  */
-#line 455 "b.y"
+#line 479 "b.y"
     {
          deb_if=qc; 
          quadr("BZ","","temp_cond","vide"); 
@@ -2036,7 +2060,7 @@ yyreduce:
   case 43:
 
 /* Line 1455 of yacc.c  */
-#line 460 "b.y"
+#line 484 "b.y"
     {
          /*deb_if=qc; 
          quadr($2,"","temp_cond","vide"); */
@@ -2046,49 +2070,49 @@ yyreduce:
   case 47:
 
 /* Line 1455 of yacc.c  */
-#line 469 "b.y"
+#line 493 "b.y"
     {strcpy((yyval.operCond),"BLE");;}
     break;
 
   case 48:
 
 /* Line 1455 of yacc.c  */
-#line 469 "b.y"
+#line 493 "b.y"
     {strcpy((yyval.operCond),"BL");;}
     break;
 
   case 49:
 
 /* Line 1455 of yacc.c  */
-#line 469 "b.y"
+#line 493 "b.y"
     {strcpy((yyval.operCond),"BNE");}
     break;
 
   case 50:
 
 /* Line 1455 of yacc.c  */
-#line 469 "b.y"
+#line 493 "b.y"
     {strcpy((yyval.operCond),"BGE");}
     break;
 
   case 51:
 
 /* Line 1455 of yacc.c  */
-#line 469 "b.y"
+#line 493 "b.y"
     {strcpy((yyval.operCond),"BG");}
     break;
 
   case 52:
 
 /* Line 1455 of yacc.c  */
-#line 469 "b.y"
+#line 493 "b.y"
     {strcpy((yyval.operCond),"BE");}
     break;
 
   case 53:
 
 /* Line 1455 of yacc.c  */
-#line 473 "b.y"
+#line 497 "b.y"
     {
        
         sprintf(tmp,"%d",deb_while);
@@ -2102,7 +2126,7 @@ yyreduce:
   case 54:
 
 /* Line 1455 of yacc.c  */
-#line 481 "b.y"
+#line 505 "b.y"
     {
            save_bz=qc;   
            quadr("BZ","","temp_cond","vide"); 
@@ -2112,7 +2136,7 @@ yyreduce:
   case 55:
 
 /* Line 1455 of yacc.c  */
-#line 486 "b.y"
+#line 510 "b.y"
     {
         deb_while=qc;
      
@@ -2122,7 +2146,7 @@ yyreduce:
 
 
 /* Line 1455 of yacc.c  */
-#line 2126 "b.tab.c"
+#line 2150 "b.tab.c"
       default: break;
     }
   YY_SYMBOL_PRINT ("-> $$ =", yyr1[yyn], &yyval, &yyloc);
@@ -2334,7 +2358,7 @@ yyreturn:
 
 
 /* Line 1675 of yacc.c  */
-#line 490 "b.y"
+#line 514 "b.y"
 
 int yyerror(char* msg)
 {printf("%s ligne %d et colonne %d",msg,ligne,col);
@@ -2351,7 +2375,9 @@ affiche(lisElts);
 //Quadruple
 affich_quad();
 optimize_quads(quadruplets,qc);
-printf("##############optimiser############");
+ 
+ 
+printf("\n-----optimiser------");
 affich_quad();
 
 //yyin = fopen("test.txt", "r");

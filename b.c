@@ -138,8 +138,10 @@ int recherche_type(Liste *lisElts,char nom[20]) {
   Liste p=*lisElts;
    while(p!=NULL){
  if(strcmp(p->Nom,nom)==0){
-       return p->nature;
+        
+       return p->type;
       }
        p=(*p).Suivant;
    }
 }
+ 

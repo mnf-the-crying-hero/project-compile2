@@ -16,8 +16,8 @@ x=5;
 %%f=5*e;
 
 %%Elimination d'expression redondantes
-%%e=x+5; 
-%%f=x+5;
+e=x+5; 
+f=x+5;
 
 %%Simplification algébrique
 %%e=x*5;
