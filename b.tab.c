@@ -1984,7 +1984,7 @@ yyreduce:
 
                 (yyval.Col).type=p->type;
                 (yyval.Col).name=(yyvsp[(3) - (3)].str);
-                printf((yyval.Col).name);
+                //printf($$.name);
                
         }
         ;}

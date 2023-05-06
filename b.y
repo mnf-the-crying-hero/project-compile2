@@ -430,7 +430,7 @@ Ainstfor:pfor '(' idf {
 
                 $$.type=p->type;
                 $$.name=$3;
-                printf($$.name);
+                //printf($$.name);
                
         }
         }
