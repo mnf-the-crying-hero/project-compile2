@@ -1,0 +1,19 @@
+plus
+{
+VAR{      
+INTEGER e;%%alger
+INTEGER x;   
+INTEGER z,f;         
+}
+CODE{
+x=5; 
+ 
+
+%%Propagation expression
+e=x; 
+f=5+e;
+
+ 
+
+}
+}

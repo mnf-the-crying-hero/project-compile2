@@ -1,0 +1,16 @@
+plus
+{
+VAR{      
+INTEGER e;%%alger
+INTEGER x;   
+INTEGER z,f;         
+}
+CODE{
+x=5; 
+%%Elimination d'expression redondantes
+e=x+5; 
+f=x+5;
+z=f;
+ 
+}
+}

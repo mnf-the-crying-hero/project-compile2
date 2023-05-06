@@ -1,0 +1,15 @@
+plus
+{
+VAR{      
+INTEGER j,a,m,k;          
+}
+CODE{
+%%multiplication
+%%k=5*j;
+%%Calcul inutile
+k=j+1;
+a=k-1;
+m=4+a;
+ 
+}
+}
