@@ -21,7 +21,7 @@ int recherche_list(Liste *liselts,char Name[20]){
 }
 
 void inserer  (char Nom[20])
-{ 
+{   
     strcpy(lidf[cpt].Nom,Nom);
     cpt++;
 }
@@ -53,11 +53,13 @@ void ajouttete(Liste *tete,char Nom[20],int nature,int type,int valeur)
        strcpy(nouv->Nom,Nom);
        nouv->nature=nature; 
        nouv->type=type;
-       if(nouv->type==0){
+       if(nouv->type==0 || nouv->type==2){
           nouv->valeur.entier=valeur;
        }else if(nouv->type==1){ nouv->valeur.real=valeur;}
         nouv->Suivant=*tete; 
         *tete=nouv;
+     
+
   }
    
 }
@@ -82,7 +84,7 @@ void affiche(Liste lisElts)
       printf("idf*********type***********nature**********valeur\n");
     while(lisElts!=NULL)
     {
-       if(lisElts->type==0){
+       if(lisElts->type==0 ||lisElts->type==2){
          printf("%s\t\t%d\t\t%d\t\t%d\n",lisElts->Nom,lisElts->type,lisElts->nature,lisElts->valeur.entier);
        }else if(lisElts->type==1){
           printf("%s\t\t%d\t\t%d\t\t%.02f\n",lisElts->Nom,lisElts->type,lisElts->nature,lisElts->valeur.real);

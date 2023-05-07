@@ -75,14 +75,18 @@ S: idf '{' pvar '{' PARTIEDEC '}'{th = init_table(TAILLE_TABLE);transformer_tsTo
 
 PARTIEDEC: PARTIEDEC pint LISTEVARIABLE ';' {remplire(&lisElts,0,0,0);}|
            PARTIEDEC pfloat LISTEVARIABLE ';' {remplire(&lisElts,0,1,0);}|
-           PARTIEDEC pconst pint LISTEVARIABLE aff entier ';' {remplire(&lisElts,1,0,$6);}|
-           PARTIEDEC pconst pfloat LISTEVARIABLE aff reel ';' {remplire(&lisElts,1,1,$6);}| 
-            PARTIEDEC STRUCTURE 
+           PARTIEDEC pconst  LISTEVARIABLE aff entier ';' {remplire(&lisElts,1,0,$5);}|
+           PARTIEDEC pconst  LISTEVARIABLE aff reel ';' {remplire(&lisElts,1,1,$5);}| 
+            PARTIEDEC STRUCTURE  {remplire(&lisElts,0,2,0);}
+            |PARTIEDEC  pstruct idf LISTSTRUCT ';'{remplire(&lisElts,0,2,0);}
             |
            
             ;
-STRUCTURE: pstruct '{' PARTIEDEC '}' idf ';'
+STRUCTURE: pstruct '{' PARTIEDEC '}' idf ';' {inserer($5);}
 	        ;
+LISTSTRUCT: idf {inserer($1);}
+|idf ','  LISTSTRUCT{inserer($1);}
+;
 LISTEVARIABLE:idf {inserer($1);}|idf ',' LISTEVARIABLE {inserer($1);}|idf '[' entier ']'{sprintf(savetab,"%s[%d]",$1,$3); inserer(savetab);}|idf '[' idf ']'{sprintf(savetab,"%s[%s]",$1,$3); inserer(savetab);}
 ;
 
@@ -93,9 +97,12 @@ inst:instaff ';';
 instaff:idf aff expr{
         //printf("%d=%d",recherche_type(&lisElts,$1),$3.type);
         remplire_cont_idf(&lisElts,$1,val2);non_dec(&lisElts,$1); 
+         //printf("%s-%d %s-%d\n",$1,recherche_type(&lisElts,$1),$3.name,$3.type);
         if(recherche_type(&lisElts,$1)!=$3.type){
-           printf("Erreur semantique: Incompatibilite Type  a la ligne [%d] et a la colonne [%d]\n\n",ligne,col);exit(-1);     
+        printf("Erreur semantique: Incompatibilite Type  a la ligne [%d] et a la colonne [%d]\n\n",ligne,col);exit(-1);     
         }
+        
+
         if($3.name==NULL){
                 if($3.type==0){
                         
@@ -113,6 +120,7 @@ instaff:idf aff expr{
                         }
 
                 }else{
+                       
                         /*
                 val2=return_value(&lisElts,$3.name);
                 if(val2.type==0){
@@ -174,11 +182,15 @@ expr :  expr  padd  expr {
                         sprintf(tmp,"%.02f", $3);
                         quadr("+",tmp,$3.name,res); 
                         }
-                      
+                        if(($1.type==1 || $3.type==1)){
+                                 $$.type=1;
+                        }else{
+                                 $$.type=0;
+                        }
                      
                 }else if($3.name==NULL){
                        
-                       
+                        
                         if($3.type==0){
                         sprintf(tmp,"%d",$3);
                         quadr("+",$1.name,tmp,res); 
@@ -186,6 +198,11 @@ expr :  expr  padd  expr {
                         sprintf(tmp,"%.02f", $3);
                         quadr("+",$1.name,tmp,res); 
                         }  
+                        if(($1.type==1 || $3.type==1)){
+                                 $$.type=1;
+                        }else{
+                                 $$.type=0;
+                        }
                         $$.name = (char*) malloc(20);
                        
                 }else{
@@ -374,7 +391,16 @@ expr :  expr  padd  expr {
         }else{printf("Erreur semantique: Division par zero  a la ligne [%d] et a la colonne [%d]\n\n",ligne,col);exit(-1);} 
         }
         | '(' expr ')' {$$ = $2;}
-        | idf {$$.name = strdup($1);}
+        | idf {
+                $$.name = strdup($1); 
+                if(recherche_type(&lisElts,$1)==1){
+                     $$.type = 1;    
+                }else  if(recherche_type(&lisElts,$1)==0){
+                       $$.type = 0;         
+                }else{
+                        $$.type = 2;
+                }
+        }
         | entier {
                 $$.type = 0; // initialiser le type de la nouvelle expression à entier
                 $$.entier=$1;
@@ -537,12 +563,12 @@ affiche(lisElts);
  
 //afficher_table(th);
 //Quadruple
-affich_quad();
-optimize_quads(quadruplets,qc);
+//affich_quad();
+//optimize_quads(quadruplets,qc);
  
  
-printf("\n-----optimiser------");
-affich_quad();
+//printf("\n-----optimiser------");
+//affich_quad();
 
 //yyin = fopen("test.txt", "r");
 //fclose (yyin);
