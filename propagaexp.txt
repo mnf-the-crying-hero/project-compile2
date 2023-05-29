@@ -1,0 +1,13 @@
+plus
+{
+VAR{      
+INTEGER j,a,m,k;          
+}
+CODE{
+
+k=5*j;
+
+j=2+k;
+
+}
+}

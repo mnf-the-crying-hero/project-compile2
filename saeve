@@ -407,9 +407,6 @@ expr :  expr  padd  expr {
         }|idf '.' idf{
                 sprintf(tmp,"%s.%s",$1,$3);
                 $$.name=tmp;
-        }|idf '['idf']'{
-                sprintf(tmp,"%s[%s]",$1,$3);
-                $$.name=tmp;    
         }
 ;
 
@@ -516,44 +513,45 @@ Bifelse:Aif '{' PARTIEINST '}'
 Aif:pif '(' cond ')'{
         
          deb_if=qc; 
-        
-         printf("D%s\n",$3.cond2);
-         quadr($3.opera,"",$3.cond1,$3.cond2); 
+        printf("qc:%d",deb_if);
+          
+              quadr($3.opera,"",$3.cond1,$3.cond2);
         }
     ;
-cond:   '(' expr c expr  ')'{
-         /*deb_if=qc; 
-         quadr($2,"","temp_cond","vide"); */
-         $$.opera=$3;
-        if($2.name==""){
-                if($2.type==0){
-                
-                        sprintf(res,"%d", $2.entier);  
-                }else if($2.type==1){
-                        sprintf(res,"%.02f", $2.reel);
-                }
-        }else{           
-                $$.cond1=$2.name;
-        }
-        if($4.name==""){
-                if($4.type==0){
-                        sprintf($$.cond2,"%d", $4.entier);
+cond:   
+        '(' expr c expr  ')'{
+                /*deb_if=qc; 
+                quadr($2,"","temp_cond","vide"); */
+                $$.opera=$3;
+                if($2.name==""){
+                        if($2.type==0){
                         
-                }else if ($4.type==1){
-                        sprintf($$.cond2,"%.02f", $4.reel);
-                        
-                }else{
-                        strcpy($$.cond2,$4.name);
+                                sprintf(res,"%d", $2.entier);  
+                        }else if($2.type==1){
+                                sprintf(res,"%.02f", $2.reel);
+                        }
+                }else{           
+                        $$.cond1=$2.name;
                 }
-        }else{  
+                if($4.name==""){
+                        if($4.type==0){
+                                sprintf($$.cond2,"%d", $4.entier);
+                                
+                        }else if ($4.type==1){
+                                sprintf($$.cond2,"%.02f", $4.reel);
+                                
+                        }else{
+                                strcpy($$.cond2,$4.name);
+                        }
+                }else{  
+                        
+                        $$.cond2=$4.name;
+                } 
+        
+                $$.opera=$3;
                 
-                $$.cond2=$4.name;
-        } 
-        printf("d");
-         $$.opera=$3;
-         
-        }|
-          expr c expr   {
+                }|
+        expr c expr   {
          /*deb_if=qc; 
          quadr($2,"","temp_cond","vide"); */
          $$.opera=$2;
@@ -583,10 +581,16 @@ cond:   '(' expr c expr  ')'{
         } 
         printf("d");
          $$.opera=$2;
-         
+     
         } 
-        |cond ou cond
-        |cond et cond 
+        |cond ou cond{
+                quadr($1.opera,"",$1.cond1,$1.cond2);
+                quadr($3.opera,"",$3.cond1,$3.cond2);
+        }
+        |cond et cond {
+                 quadr($1.opera,"",$1.cond1,$1.cond2);
+                  quadr($3.opera,"",$3.cond1,$3.cond2);
+        }
         |negation cond
 ;
  
@@ -609,7 +613,7 @@ INSTW:Binstw '{' PARTIEINST '}'{
         };
 Binstw:Ainstw '(' cond ')'{
            save_bz=qc;   
-           quadr($3.opera,"",$3.cond1,$3.cond2); 
+           quadr("BZ","","temp_cond","vide"); 
         }
         ;
 Ainstw:pwhile{
@@ -631,12 +635,12 @@ affiche(lisElts);
 //afficher_table(th);
 //Quadruple
 affich_quad();
-optimize_quads(quadruplets,qc);
-
+//optimize_quads(quadruplets,qc);
  
-printf("\n-----optimiser------");
-affich_quad();
-generateAssemblyCode(quadruplets,qc,"code.asm");
+ 
+//printf("\n-----optimiser------");
+//affich_quad();
+
 //yyin = fopen("test.txt", "r");
 //fclose (yyin);
 return 0;  

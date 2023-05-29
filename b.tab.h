@@ -88,13 +88,18 @@ float reel;
 int type;
 char* name;
 }Col;
- 
+
+struct{
+char* cond1;
+char* cond2;
+char* opera;
+}cod;
 
 
 
 
 /* Line 1676 of yacc.c  */
-#line 98 "b.tab.h"
+#line 103 "b.tab.h"
 } YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */

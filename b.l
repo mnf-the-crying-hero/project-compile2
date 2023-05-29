@@ -80,7 +80,7 @@ FLOAT {col=col+yyleng;return pfloat;}
 "||" { col=col+yyleng;return ou ;}
 "&&" { col=col+yyleng;return  et;}
 "!" {col=col+yyleng;return negation;}
-
+"." {col=col+yyleng;return '.';}
 "," {col=col+yyleng;return ',';}
 ":" {col=col+yyleng;return ':';}
 {commentaire}
