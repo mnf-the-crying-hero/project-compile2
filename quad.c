@@ -341,13 +341,15 @@ quadruplet* optimize_quads(quadruplet* quads,int num_quads) {
                     }
 
                   
-                //propagation expression
+            //propagation expression
                 else if((strcmp(q1->arg1,q2->res)== 0 ||(strcmp(q1->arg2,q2->res)== 0 ))&&(strncmp(q2->arg1, "T", 1) == 0) && strcmp(q2->op, "=") == 0 ){
                     //printf("test");
                   strcpy(q1->arg1,q2->arg1);
                   optimized = 1;
             
-                }else if((strcmp(q1->op,"=")!=0)) {
+                }
+            //Elimination redanant
+                else if((strcmp(q1->op,"=")!=0)) {
                   if(Eliminationredanant(quads,num_quads,i)==1){
                     memmove(q1, q1+1, (num_quads-i)*sizeof(quadruplet));
                     num_quads--;

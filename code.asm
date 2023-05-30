@@ -1,8 +1,38 @@
-MOV f6, T0
-SUB T2, j, 1
-MOV f8, T2
-MOV f9, T4
-MOV temp, A[f9]
-MOV f13, A[f6]
-MOV A[f9], f13
-MOV A[f6], temp
+SUB T0, 1, -3
+MOV z, T0
+ADD T2, z, 7
+ADD T3, T2, f
+SUB T4, 5.30, -2
+DIV T5, T3, T4
+MOV x, T5
+MOV x, n
+MOV Var3.F1, 3
+MOV Var3.x2, 1.50
+CMP z, f
+JE 13
+MOV z, 2
+JMP 14
+MOV z, 3
+CMP z, f
+JE 17
+MOV z, 2
+JMP 18
+MOV z, 3
+CMP x, e
+JGE 22
+ADD T19, e, 2
+MOV e, T19
+JMP 18
+MOV i, 0
+ADD T23, 2, i
+CMP n, T23
+JG 28
+ADD T25, i, 2
+MOV i, T25
+JMP 23
+DIV T28, 5, 2
+MOV x, T28
+DIV T30, 5.50, 5.50
+MOV i, T30
+DIV T32, 5.50, 2.50
+MOV x, T32
