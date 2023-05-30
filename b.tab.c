@@ -2630,11 +2630,11 @@ affiche(lisElts);
 //afficher_table(th);
 //Quadruple
 affich_quad();
-//qc=optimize_quads(quadruplets,qc);
+qc=optimize_quads(quadruplets,qc);
 
  
-//printf("\n-----optimiser------");
-//affich_quad();
+printf("\n-----optimiser------");
+affich_quad();
 generateAssemblyCode(quadruplets,qc,"code.asm");
 //yyin = fopen("test.txt", "r");
 //fclose (yyin);

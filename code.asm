@@ -113,64 +113,60 @@ JMP 18
 MOV vide, AX
 
 ; Quadruplet 22
-MOV AX, 0
-MOV i, AX
-
-; Quadruplet 23
 MOV AX, 2
-MOV BX, i
+MOV BX, 0
 ADD AX, BX
 MOV T23, AX
 
-; Quadruplet 24
+; Quadruplet 23
 MOV AX, 28
 MOV BX, T23
 CMP n, 28
 JG 28
 MOV n, AX
 
-; Quadruplet 25
+; Quadruplet 24
 MOV AX, i
 MOV BX, 2
 ADD AX, BX
 MOV T25, AX
 
-; Quadruplet 26
+; Quadruplet 25
 MOV AX, T25
 MOV i, AX
 
-; Quadruplet 27
+; Quadruplet 26
 MOV AX, 23
 JMP 23
 MOV vide, AX
 
-; Quadruplet 28
+; Quadruplet 27
 MOV AX, 5
 MOV BX, 2
 DIV BX
 MOV T28, AX
 
-; Quadruplet 29
+; Quadruplet 28
 MOV AX, T28
 MOV x, AX
 
-; Quadruplet 30
+; Quadruplet 29
 MOV AX, 5.50
 MOV BX, 5.50
 DIV BX
 MOV T30, AX
 
-; Quadruplet 31
+; Quadruplet 30
 MOV AX, T30
 MOV i, AX
 
-; Quadruplet 32
+; Quadruplet 31
 MOV AX, 5.50
 MOV BX, 2.50
 DIV BX
 MOV T32, AX
 
-; Quadruplet 33
+; Quadruplet 32
 MOV AX, T32
 MOV x, AX
 

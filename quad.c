@@ -241,8 +241,36 @@ int Eliminationredanant(quadruplet* quads,int num_quads,int indice_actuel){
  
     return 0;
 
-}
+}/*
+int propagation(quadruplet* quads,int num_quads,int indice_actuel){
+   quadruplet* q1 = &quads[indice_actuel];
+    for(int i= 0; i < indice_actuel; i++){
+       quadruplet* q2 = &quads[i];
+       if(strcmp(q1->res,q2->res)!=0){
+          if((strcmp(q1->arg1,q2->res)== 0 ||(strcmp(q1->arg2,q2->res)== 0 ))&&(strncmp(q2->arg1, "T", 1) == 0) && strcmp(q2->op, "=") == 0 ){
+                quadruplet* qres = &quads[i + 1];
+                quadruplet* qchange = &quads[indice_actuel + 1];
+                //printf("%s",qchange->arg1);
+                strcpy(q1->arg1, q2->arg1);
+
+                return 1;
+            }
+        }
+       }
  
+    return 0;
+}
+//propagation expression
+    else if(propagation(quads,num_quads,i)==1){
+        //printf("test");
+        memmove(q1, q1+1, (num_quads-i)*sizeof(quadruplet));
+        num_quads--;
+        i--;
+
+      optimized = 1;
+
+    }
+*/
 int optimize_quads(quadruplet* quads,int num_quads) {
  
     
@@ -254,7 +282,7 @@ int optimize_quads(quadruplet* quads,int num_quads) {
             
             quadruplet* q1 = &quads[i];
             for (int j = i+1; j < num_quads; j++) {
-                
+               
                 quadruplet* q2 = &quads[j];
             // Simplification algébrique             
                   if (strcmp(q1->op, "*") == 0 && ((atoi(q1->arg1)==2 && isalpha(q1->arg2[0])) || (atoi(q1->arg2)==2 && isalpha(q1->arg1[0])) ) ) {
@@ -341,13 +369,7 @@ int optimize_quads(quadruplet* quads,int num_quads) {
                     }
 
                   
-            //propagation expression
-                else if((strcmp(q1->arg1,q2->res)== 0 ||(strcmp(q1->arg2,q2->res)== 0 ))&&(strncmp(q2->arg1, "T", 1) == 0) && strcmp(q2->op, "=") == 0 ){
-                    //printf("test");
-                  strcpy(q1->arg1,q2->arg1);
-                  optimized = 1;
-            
-                }
+
             //Elimination redanant
                 else if((strcmp(q1->op,"=")!=0)) {
                   if(Eliminationredanant(quads,num_quads,i)==1){
