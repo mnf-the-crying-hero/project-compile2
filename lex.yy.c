@@ -441,17 +441,14 @@ static char *yy_last_accepting_cpos;
 char *yytext;
 #line 1 "b.l"
 #define INITIAL 0
-/*7. Si la constante entière
-est signée, elle doit être mise entre parenthèses. ????*/
-#line 4 "b.l"
+#line 3 "b.l"
 #include <stdio.h>
 #include<string.h>
 #include "b.tab.h" 
  
 int ligne=1;
 int col=0;
-/*INTEGER 0|[1-9]{chiffre}*|[(][-+][1-9]{chiffre}*[)]*/
-#line 455 "lex.yy.c"
+#line 452 "lex.yy.c"
 
 /* Macros after this point can all be overridden by user definitions in
  * section 1.
@@ -602,9 +599,9 @@ YY_DECL
 	register char *yy_cp, *yy_bp;
 	register int yy_act;
 
-#line 23 "b.l"
+#line 22 "b.l"
 
-#line 608 "lex.yy.c"
+#line 605 "lex.yy.c"
 
 	if ( yy_init )
 		{
@@ -689,57 +686,57 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-#line 24 "b.l"
+#line 23 "b.l"
 {col=col+yyleng;return pvar ;}
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 25 "b.l"
+#line 24 "b.l"
 {col=col+yyleng;return pcode ;}
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 27 "b.l"
+#line 26 "b.l"
 {col=col+yyleng;return pstruct;}
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 28 "b.l"
+#line 27 "b.l"
 {col=col+yyleng;return pif ;}
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 29 "b.l"
+#line 28 "b.l"
 {col=col+yyleng;return pelse ;}
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 31 "b.l"
+#line 30 "b.l"
 {col=col+yyleng;return pfor ;}
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 32 "b.l"
+#line 31 "b.l"
 {col=col+yyleng;return pwhile;}
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 33 "b.l"
+#line 32 "b.l"
 {col=col+yyleng;return pconst;}
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 34 "b.l"
+#line 33 "b.l"
 {col=col+yyleng;return pint;}
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 35 "b.l"
+#line 34 "b.l"
 {col=col+yyleng;return pfloat;}
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 36 "b.l"
+#line 35 "b.l"
 {
         
     col = col + yyleng;
@@ -760,17 +757,17 @@ YY_RULE_SETUP
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 55 "b.l"
+#line 54 "b.l"
 {col=col+yyleng; yylval.flt =atof(yytext); return reel; }
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 56 "b.l"
+#line 55 "b.l"
 {col=col+yyleng; return aff;}
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 57 "b.l"
+#line 56 "b.l"
 { if(yyleng <= 8){col=col+yyleng; yylval.str=strdup(yytext);return idf;}else{
         printf("erreur lexical, ligne %d, colonne %d, erreur : %s ", ligne, col, yytext);
 
@@ -778,145 +775,145 @@ YY_RULE_SETUP
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 62 "b.l"
+#line 61 "b.l"
 { col=col+yyleng;return padd ;}
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 63 "b.l"
+#line 62 "b.l"
 { col=col+yyleng;return psous ;}
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
-#line 64 "b.l"
+#line 63 "b.l"
 {col=col+yyleng;return pmul; }
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
-#line 65 "b.l"
+#line 64 "b.l"
 {col=col+yyleng;return pdiv;}
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
-#line 68 "b.l"
+#line 67 "b.l"
 {col++;return ')';}
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
-#line 69 "b.l"
+#line 68 "b.l"
 {col++;return '(';}
 	YY_BREAK
 case 21:
 YY_RULE_SETUP
-#line 70 "b.l"
+#line 69 "b.l"
 {col++;return '[';}
 	YY_BREAK
 case 22:
 YY_RULE_SETUP
-#line 71 "b.l"
+#line 70 "b.l"
 {col++;return ']';}
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
-#line 72 "b.l"
+#line 71 "b.l"
 {col++;return '{';}
 	YY_BREAK
 case 24:
 YY_RULE_SETUP
-#line 73 "b.l"
+#line 72 "b.l"
 {col++;return '}';}
 	YY_BREAK
 case 25:
 YY_RULE_SETUP
-#line 75 "b.l"
+#line 74 "b.l"
 {col=col+yyleng;return psup;}
 	YY_BREAK
 case 26:
 YY_RULE_SETUP
-#line 76 "b.l"
+#line 75 "b.l"
 {col=col+yyleng;return psupEgal;}
 	YY_BREAK
 case 27:
 YY_RULE_SETUP
-#line 77 "b.l"
+#line 76 "b.l"
 {col=col+yyleng;return pinf;}
 	YY_BREAK
 case 28:
 YY_RULE_SETUP
-#line 78 "b.l"
+#line 77 "b.l"
 {col=col+yyleng;return pinfEgal;}
 	YY_BREAK
 case 29:
 YY_RULE_SETUP
-#line 79 "b.l"
+#line 78 "b.l"
 {col=col+yyleng;return pequal;}
 	YY_BREAK
 case 30:
 YY_RULE_SETUP
-#line 80 "b.l"
+#line 79 "b.l"
 {col=col+yyleng;return pnotequal;}
 	YY_BREAK
 case 31:
 YY_RULE_SETUP
-#line 81 "b.l"
+#line 80 "b.l"
 { col=col+yyleng;return ou ;}
 	YY_BREAK
 case 32:
 YY_RULE_SETUP
-#line 82 "b.l"
+#line 81 "b.l"
 { col=col+yyleng;return  et;}
 	YY_BREAK
 case 33:
 YY_RULE_SETUP
-#line 83 "b.l"
+#line 82 "b.l"
 {col=col+yyleng;return negation;}
 	YY_BREAK
 case 34:
 YY_RULE_SETUP
-#line 84 "b.l"
+#line 83 "b.l"
 {col=col+yyleng;return '.';}
 	YY_BREAK
 case 35:
 YY_RULE_SETUP
-#line 85 "b.l"
+#line 84 "b.l"
 {col=col+yyleng;return ',';}
 	YY_BREAK
 case 36:
 YY_RULE_SETUP
-#line 86 "b.l"
+#line 85 "b.l"
 {col=col+yyleng;return ':';}
 	YY_BREAK
 case 37:
 YY_RULE_SETUP
-#line 87 "b.l"
+#line 86 "b.l"
 
 	YY_BREAK
 case 38:
 YY_RULE_SETUP
-#line 88 "b.l"
+#line 87 "b.l"
 {col++;return ';';}
 	YY_BREAK
 case 39:
 YY_RULE_SETUP
-#line 89 "b.l"
+#line 88 "b.l"
 col+=yyleng;
 	YY_BREAK
 case 40:
 YY_RULE_SETUP
-#line 90 "b.l"
+#line 89 "b.l"
 {ligne++;col=1;}
 	YY_BREAK
 case 41:
 YY_RULE_SETUP
-#line 91 "b.l"
+#line 90 "b.l"
 {printf("Erreur lexical la ligne %d et colonne %d \n",ligne,col);}	
 	YY_BREAK
 case 42:
 YY_RULE_SETUP
-#line 93 "b.l"
+#line 92 "b.l"
 ECHO;
 	YY_BREAK
-#line 920 "lex.yy.c"
+#line 917 "lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -1802,7 +1799,7 @@ int main()
 	return 0;
 	}
 #endif
-#line 93 "b.l"
+#line 92 "b.l"
 
 int yywrap(void)
 {

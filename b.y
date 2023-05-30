@@ -130,7 +130,70 @@ instaff:idf aff expr{
           
                     quadr("=",$3.name,"vide",$1);  
                 }
-        }|idf '.' idf aff expr
+        }|idf '.' idf aff expr{
+
+                non_dec(&lisElts,$3); 
+                non_dec(&lisElts,$1);
+                sprintf(tmp2,"%s.%s", $1,$3);
+                 if(recherche_type(&lisElts,$3)!=$5.type){
+                        printf("Erreur semantique: Incompatibilite Type  a la ligne [%d] et a la colonne [%d]\n\n",ligne,col);exit(-1);     
+                        }
+                        
+
+                        if($5.name==NULL){
+                                if($5.type==0){
+                                        
+                                        sprintf(tmp,"%d",$5.entier);
+                                        quadr("=",tmp,"vide",tmp2);
+                                }
+                                else if($5.type==1){
+                                        
+                                        sprintf(tmp,"%.02f",$5.reel);
+                                        quadr("=",tmp,"vide",tmp2);    
+                                        }
+                                        else{
+                                                
+                                                quadr("=",$5.name,"vide",tmp2);        
+                                        }
+
+                                }else{
+                                
+                        
+                                quadr("=",$5.name,"vide",tmp2);  
+                                }
+        }|idf '['idf']' aff expr{
+               
+                
+                non_dec(&lisElts,$3); 
+                non_dec_tab(&lisElts,$1);
+                 sprintf(tmp2,"%s[%s]",$1,$3);
+                 if(recherche_type(&lisElts,$3)!=$6.type){
+                        printf("Erreur semantique: Incompatibilite Type  a la ligne [%d] et a la colonne [%d]\n\n",ligne,col);exit(-1);     
+                        }
+                        
+
+                        if($6.name==NULL){
+                                if($6.type==0){
+                                        
+                                        sprintf(tmp,"%d",$6.entier);
+                                        quadr("=",tmp,"vide",tmp2);
+                                }
+                                else if($6.type==1){
+                                        
+                                        sprintf(tmp,"%.02f",$6.reel);
+                                        quadr("=",tmp,"vide",tmp2);    
+                                        }
+                                        else{
+                                                
+                                                quadr("=",$6.name,"vide",tmp2);        
+                                        }
+
+                                }else{
+                                
+                        
+                                quadr("=",$6.name,"vide",tmp2);  
+                                }
+        }
         ;
 
 
@@ -405,10 +468,10 @@ expr :  expr  padd  expr {
                 $$.type = 1; // initialiser le type de la nouvelle expression à réel
                   $$.reel=$1;
                   
-        }|idf '.' idf{
+        }|idf'.'idf{
                 sprintf(tmp,"%s.%s",$1,$3);
                 $$.name=tmp;
-        }|idf '['idf']'{
+        }|idf'['idf']'{
                 sprintf(tmp,"%s[%s]",$1,$3);
                 $$.name=tmp;    
         }

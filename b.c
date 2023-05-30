@@ -146,4 +146,25 @@ int recherche_type(Liste *lisElts,char nom[20]) {
        p=(*p).Suivant;
    }
 }
+int recherche_listfortab(Liste *lisElts, char Name[20]) {
+    Liste p;
+    p = *lisElts;
+
+    while (p != NULL) {
+        if (strcmp(strtok(p->Nom, "["), Name) == 0) {
+            return 1;
+        } else {
+            p = p->Suivant;
+        }
+    }
+    return -1;
+}
+
+void non_dec_tab(Liste *lisElts, char nom[20]) {
+    if (recherche_listfortab(lisElts, nom) == -1) {
+        printf("Erreur semantique: \"%s\" non declare", nom);
+        exit(-1);
+    }
+}
+
  

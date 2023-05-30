@@ -38,3 +38,6 @@ void non_dec(Liste *lisElts,char Name[20]);
 void remplire_cont_idf(Liste *lisElts,char nom[20],multi_val2 valeur);
 int recherche_type(Liste *lisElts,char nom[20]);
 multi_val2  return_value(Liste *lisElts,char Name[20]);
+
+int recherche_listfortab(Liste *lisElts, char Name[20]);
+void non_dec_tab(Liste *lisElts,char nom[20]);

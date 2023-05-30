@@ -1,5 +1,4 @@
-/*7. Si la constante entière
-est signée, elle doit être mise entre parenthèses. ????*/
+
 %{
 #include <stdio.h>
 #include<string.h>
@@ -10,7 +9,7 @@ int col=0;
 %}
 chiffre [0-9]
 lettre_com[a-zA-Z][%*''()"",&]
-/*INTEGER 0|[1-9]{chiffre}*|[(][-+][1-9]{chiffre}*[)]*/
+
 
 chiffreSigne "("[+-]?[1-9][0-9]*")"
 chiffreReelSigne "("[+-]?([0-9][0-9]*"."[0-9]*|0)")"
