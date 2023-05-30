@@ -2635,7 +2635,7 @@ affich_quad();
  
 //printf("\n-----optimiser------");
 //affich_quad();
-generateMachineCode(qc);
+generateAssemblyCode(quadruplets,qc,"code.asm");
 //yyin = fopen("test.txt", "r");
 //fclose (yyin);
 return 0;  

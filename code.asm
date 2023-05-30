@@ -53,6 +53,8 @@ MOV Var3.x2, AX
 ; Quadruplet 10
 MOV AX, 13
 MOV BX, f
+CMP z, 13
+JE 13
 MOV z, AX
 
 ; Quadruplet 11
@@ -61,6 +63,7 @@ MOV z, AX
 
 ; Quadruplet 12
 MOV AX, 14
+JMP 14
 MOV vide, AX
 
 ; Quadruplet 13
@@ -70,6 +73,8 @@ MOV z, AX
 ; Quadruplet 14
 MOV AX, 17
 MOV BX, f
+CMP z, 17
+JE 17
 MOV z, AX
 
 ; Quadruplet 15
@@ -78,6 +83,7 @@ MOV z, AX
 
 ; Quadruplet 16
 MOV AX, 18
+JMP 18
 MOV vide, AX
 
 ; Quadruplet 17
@@ -87,6 +93,8 @@ MOV z, AX
 ; Quadruplet 18
 MOV AX, 22
 MOV BX, e
+CMP x, 22
+JGE 22
 MOV x, AX
 
 ; Quadruplet 19
@@ -101,6 +109,7 @@ MOV e, AX
 
 ; Quadruplet 21
 MOV AX, 18
+JMP 18
 MOV vide, AX
 
 ; Quadruplet 22
@@ -116,6 +125,8 @@ MOV T23, AX
 ; Quadruplet 24
 MOV AX, 28
 MOV BX, T23
+CMP n, 28
+JG 28
 MOV n, AX
 
 ; Quadruplet 25
@@ -130,6 +141,7 @@ MOV i, AX
 
 ; Quadruplet 27
 MOV AX, 23
+JMP 23
 MOV vide, AX
 
 ; Quadruplet 28

@@ -370,59 +370,57 @@ int optimize_quads(quadruplet* quads,int num_quads) {
     return num_quads;
 }
 
-void generateMachineCode( int size) {
-  FILE* output = fopen("code.asm", "w");  // Ouvre le fichier de sortie pour écrire le code machine
-  if (output == NULL) {
-    printf("Erreur lors de l'ouverture du fichier de sortie.\n");
-    return;
-  }
+void generateAssemblyCode(quadruplet* quads, int numQuadruplets, const char* fileName) {
+      FILE* file = fopen(fileName, "w");
+      if (file == NULL) {
+          printf("Erreur lors de l'ouverture du fichier.\n");
+          return;
+      }
+ // En-tête du programme assembleur
+  fprintf(file, "ORG 100h\n\n");
+      for (int i = 0; i < numQuadruplets; i++) {
+            quadruplet* quad = &quads[i];
 
-  // En-tête du programme assembleur
-  fprintf(output, "ORG 100h\n\n");
+            // Génération du code machine pour chaque quadruplet
+            fprintf(file, "; Quadruplet %d\n", i);
+            fprintf(file, "MOV AX, %s\n", quadruplets[i].arg1);
+            if(strcmp(quadruplets[i].arg2,"vide")!=0){
+                fprintf(file, "MOV BX, %s\n", quadruplets[i].arg2);
+            }
+          if (strcmp(quadruplets[i].op, "+") == 0) {
+            fprintf(file, "ADD AX, BX\n");
+          } else if (strcmp(quadruplets[i].op, "-") == 0) {
+            fprintf(file, "SUB AX, BX\n");
+          } else if (strcmp(quadruplets[i].op, "*") == 0) {
+            fprintf(file, "MUL BX\n");
+          } else if (strcmp(quadruplets[i].op, "/") == 0) {
+            fprintf(file, "DIV BX\n");}
+          else if (strcmp(quad->op, "BE") == 0) {
+              fprintf(file, "CMP %s, %s\n", quad->res, quad->arg1);
+              fprintf(file, "JE %s\n", quad->arg1);
+          } else if (strcmp(quad->op, "BR") == 0) {
+              fprintf(file, "JMP %s\n", quad->arg1);
+          }else if (strcmp(quad->op, "BLE") == 0) {
+             fprintf(file, "CMP %s, %s\n",  quad->res, quad->arg1);
+              fprintf(file, "JLE %s\n", quad->arg1);
+          }else if (strcmp(quad->op, "BL") == 0) {
+            fprintf(file, "CMP %s, %s\n",  quad->res, quad->arg1);
+              fprintf(file, "JL %s\n", quad->arg1);
+          }else if (strcmp(quad->op, "BGE") == 0) {
+            fprintf(file, "CMP %s, %s\n",  quad->res, quad->arg1);
+              fprintf(file, "JGE %s\n", quad->arg1);
+          }else if (strcmp(quad->op, "BG") == 0) {
+            fprintf(file, "CMP %s, %s\n",  quad->res, quad->arg1);
+              fprintf(file, "JG %s\n", quad->arg1);
+          }
 
-  for (int i = 0; i < size; i++) {
-    // Génération du code machine pour chaque quadruplet
-    fprintf(output, "; Quadruplet %d\n", i);
-    fprintf(output, "MOV AX, %s\n", quadruplets[i].arg1);
-    if(strcmp(quadruplets[i].arg2,"vide")!=0){
-        fprintf(output, "MOV BX, %s\n", quadruplets[i].arg2);
-    }
- 
-
-    if (strcmp(quadruplets[i].op, "+") == 0) {
-      fprintf(output, "ADD AX, BX\n");
-    } else if (strcmp(quadruplets[i].op, "-") == 0) {
-      fprintf(output, "SUB AX, BX\n");
-    } else if (strcmp(quadruplets[i].op, "*") == 0) {
-      fprintf(output, "MUL BX\n");
-    } else if (strcmp(quadruplets[i].op, "/") == 0) {
-      fprintf(output, "DIV BX\n");
-    } else if (strcmp(quadruplets->op, "BE") == 0) {
-        fprintf(output, "CMP %s, %s\n", quadruplets->res, quadruplets->arg1);
-        fprintf(output, "JE %s\n", quadruplets->arg1);
-    } else if (strcmp(quadruplets->op, "BR") == 0) {
-        fprintf(output, "JMP %s\n", quadruplets->arg1);
-    }else if (strcmp(quadruplets->op, "BLE") == 0) {
-        fprintf(output, "CMP %s, %s\n",  quadruplets->res, quadruplets->arg1);
-        fprintf(output, "JLE %s\n", quadruplets->arg1);
-    }else if (strcmp(quadruplets->op, "BL") == 0) {
-      fprintf(output, "CMP %s, %s\n",  quadruplets->res, quadruplets->arg1);
-        fprintf(output, "JL %s\n", quadruplets->arg1);
-    }else if (strcmp(quadruplets->op, "BGE") == 0) {
-      fprintf(output, "CMP %s, %s\n",  quadruplets->res, quadruplets->arg1);
-        fprintf(output, "JGE %s\n", quadruplets->arg1);
-    }else if (strcmp(quadruplets->op, "BG") == 0) {
-      fprintf(output, "CMP %s, %s\n",  quadruplets->res, quadruplets->arg1);
-        fprintf(output, "JG %s\n", quadruplets->arg1);
-    }
-
-    fprintf(output, "MOV %s, AX\n", quadruplets[i].res);
-    fprintf(output, "\n");
+      fprintf(file, "MOV %s, AX\n", quadruplets[i].res);
+    fprintf(file, "\n");
   }
 
   // Fin du programme assembleur
-  fprintf(output, "MOV AH, 4Ch\n");
-  fprintf(output, "INT 21h\n");
+  fprintf(file, "MOV AH, 4Ch\n");
+  fprintf(file, "INT 21h\n");
 
-  fclose(output);  // Ferme le fichier de sortie
-}
+      fclose(file);
+  }
