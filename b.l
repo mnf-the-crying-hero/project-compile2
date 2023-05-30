@@ -16,6 +16,7 @@ chiffreSigne "("[+-]?[1-9][0-9]*")"
 chiffreReelSigne "("[+-]?([0-9][0-9]*"."[0-9]*|0)")"
 INTEGER ({chiffre}+|{chiffreSigne})
 FLOAT ({chiffreReelSigne}|({chiffre}+"."{chiffre}+))
+
 IDF [a-zA-Z](([a-zA-Z0-9_])*)?
 commentaire ((%%)({chiffre}|.|{lettre_com})+)
 aff =

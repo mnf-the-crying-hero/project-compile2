@@ -527,10 +527,10 @@ static const yytype_uint16 yyrline[] =
        0,    79,    79,    79,    82,    83,    84,    85,    86,    87,
       88,    91,    93,    94,    96,    96,    96,    96,    99,    99,
      100,   100,   102,   103,   133,   137,   211,   274,   325,   386,
-     387,   397,   403,   407,   410,   416,   416,   416,   418,   418,
-     419,   426,   441,   449,   459,   477,   487,   500,   508,   516,
-     524,   556,   588,   589,   590,   593,   594,   595,   596,   597,
-     598,   602,   610,   615
+     387,   397,   404,   408,   411,   417,   417,   417,   419,   419,
+     420,   427,   442,   450,   460,   478,   488,   501,   509,   517,
+     525,   557,   589,   590,   591,   594,   595,   596,   597,   598,
+     599,   603,   611,   616
 };
 #endif
 
@@ -1974,7 +1974,7 @@ yyreduce:
   case 32:
 
 /* Line 1455 of yacc.c  */
-#line 403 "b.y"
+#line 404 "b.y"
     {
                 (yyval.Col).type = 1; // initialiser le type de la nouvelle expression à réel
                   (yyval.Col).reel=(yyvsp[(1) - (1)].flt);
@@ -1985,7 +1985,7 @@ yyreduce:
   case 33:
 
 /* Line 1455 of yacc.c  */
-#line 407 "b.y"
+#line 408 "b.y"
     {
                 sprintf(tmp,"%s.%s",(yyvsp[(1) - (3)].str),(yyvsp[(3) - (3)].str));
                 (yyval.Col).name=tmp;
@@ -1995,7 +1995,7 @@ yyreduce:
   case 34:
 
 /* Line 1455 of yacc.c  */
-#line 410 "b.y"
+#line 411 "b.y"
     {
                 sprintf(tmp,"%s[%s]",(yyvsp[(1) - (4)].str),(yyvsp[(3) - (4)].str));
                 (yyval.Col).name=tmp;    
@@ -2005,21 +2005,21 @@ yyreduce:
   case 38:
 
 /* Line 1455 of yacc.c  */
-#line 418 "b.y"
+#line 419 "b.y"
     {(yyval.Col).name=(yyvsp[(1) - (1)].str);}
     break;
 
   case 39:
 
 /* Line 1455 of yacc.c  */
-#line 418 "b.y"
+#line 419 "b.y"
     {(yyval.Col).entier=(yyvsp[(1) - (1)].num);}
     break;
 
   case 40:
 
 /* Line 1455 of yacc.c  */
-#line 420 "b.y"
+#line 421 "b.y"
     {       sprintf(tmp,"%d", deb_for);
                 quadr("BR",tmp,"vide","vide"); 
                 sprintf(tmp2,"%d", qc);
@@ -2030,7 +2030,7 @@ yyreduce:
   case 41:
 
 /* Line 1455 of yacc.c  */
-#line 426 "b.y"
+#line 427 "b.y"
     {
         save_bg=qc;
         sprintf(tmp,"T%d", qc);
@@ -2050,7 +2050,7 @@ yyreduce:
   case 42:
 
 /* Line 1455 of yacc.c  */
-#line 441 "b.y"
+#line 442 "b.y"
     {
         deb_for=qc;
         sprintf(res,"T%d", qc);
@@ -2063,7 +2063,7 @@ yyreduce:
   case 43:
 
 /* Line 1455 of yacc.c  */
-#line 449 "b.y"
+#line 450 "b.y"
     {
      if((yyvsp[(1) - (3)].Col).type!=0){
         printf("Error Symantique:%s pas compatible la ligne [%d] et a la colonne [%d]\n",(yyvsp[(1) - (3)].Col).name,ligne,col);exit(-1);
@@ -2078,7 +2078,7 @@ yyreduce:
   case 44:
 
 /* Line 1455 of yacc.c  */
-#line 459 "b.y"
+#line 460 "b.y"
     {
         //printf("ddd%s",$3);
         //printf("dd%lu",th);
@@ -2099,7 +2099,7 @@ yyreduce:
   case 45:
 
 /* Line 1455 of yacc.c  */
-#line 477 "b.y"
+#line 478 "b.y"
     {
         sprintf(tmp,"%d",qc); 
         ajour_quad(finInst1,2,tmp);
@@ -2115,7 +2115,7 @@ yyreduce:
   case 46:
 
 /* Line 1455 of yacc.c  */
-#line 488 "b.y"
+#line 489 "b.y"
     {
 
         sprintf(tmp,"%d",qc); 
@@ -2132,7 +2132,7 @@ yyreduce:
   case 47:
 
 /* Line 1455 of yacc.c  */
-#line 501 "b.y"
+#line 502 "b.y"
     {     
         finInst1=qc; 
  
@@ -2144,7 +2144,7 @@ yyreduce:
   case 48:
 
 /* Line 1455 of yacc.c  */
-#line 509 "b.y"
+#line 510 "b.y"
     {     
         finInst1=qc; 
         quadr("BR", "","vide","vide"); 
@@ -2156,7 +2156,7 @@ yyreduce:
   case 49:
 
 /* Line 1455 of yacc.c  */
-#line 516 "b.y"
+#line 517 "b.y"
     {
         
          deb_if=qc; 
@@ -2169,7 +2169,7 @@ yyreduce:
   case 50:
 
 /* Line 1455 of yacc.c  */
-#line 524 "b.y"
+#line 525 "b.y"
     {
          /*deb_if=qc; 
          quadr($2,"","temp_cond","vide"); */
@@ -2207,7 +2207,7 @@ yyreduce:
   case 51:
 
 /* Line 1455 of yacc.c  */
-#line 556 "b.y"
+#line 557 "b.y"
     {
          /*deb_if=qc; 
          quadr($2,"","temp_cond","vide"); */
@@ -2245,49 +2245,49 @@ yyreduce:
   case 55:
 
 /* Line 1455 of yacc.c  */
-#line 593 "b.y"
+#line 594 "b.y"
     { (yyval.operCond) = strdup("BLE"); ;}
     break;
 
   case 56:
 
 /* Line 1455 of yacc.c  */
-#line 594 "b.y"
+#line 595 "b.y"
     { (yyval.operCond) = strdup("BL"); ;}
     break;
 
   case 57:
 
 /* Line 1455 of yacc.c  */
-#line 595 "b.y"
+#line 596 "b.y"
     { (yyval.operCond) = strdup("BNE"); ;}
     break;
 
   case 58:
 
 /* Line 1455 of yacc.c  */
-#line 596 "b.y"
+#line 597 "b.y"
     { (yyval.operCond) = strdup("BGE"); ;}
     break;
 
   case 59:
 
 /* Line 1455 of yacc.c  */
-#line 597 "b.y"
+#line 598 "b.y"
     { (yyval.operCond) = strdup("BG"); ;}
     break;
 
   case 60:
 
 /* Line 1455 of yacc.c  */
-#line 598 "b.y"
+#line 599 "b.y"
     { (yyval.operCond) = strdup("BE"); ;}
     break;
 
   case 61:
 
 /* Line 1455 of yacc.c  */
-#line 602 "b.y"
+#line 603 "b.y"
     {
        
         sprintf(tmp,"%d",deb_while);
@@ -2301,7 +2301,7 @@ yyreduce:
   case 62:
 
 /* Line 1455 of yacc.c  */
-#line 610 "b.y"
+#line 611 "b.y"
     {
            save_bz=qc;   
            quadr((yyvsp[(3) - (4)].cod).opera,"",(yyvsp[(3) - (4)].cod).cond1,(yyvsp[(3) - (4)].cod).cond2); 
@@ -2311,7 +2311,7 @@ yyreduce:
   case 63:
 
 /* Line 1455 of yacc.c  */
-#line 615 "b.y"
+#line 616 "b.y"
     {
         deb_while=qc;
      
@@ -2533,7 +2533,7 @@ yyreturn:
 
 
 /* Line 1675 of yacc.c  */
-#line 619 "b.y"
+#line 620 "b.y"
 
 int yyerror(char* msg)
 {printf("%s ligne %d et colonne %d",msg,ligne,col);

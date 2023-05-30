@@ -239,7 +239,7 @@ quadruplet* optimize_quads(quadruplet* quads,int num_quads) {
                 quadruplet* q2 = &quads[j];
             // Simplification algébrique             
                   if (strcmp(q1->op, "*") == 0 && ((atoi(q1->arg1)==2 && isalpha(q1->arg2[0])) || (atoi(q1->arg2)==2 && isalpha(q1->arg1[0])) ) ) {
-                      //printf("Simplification algebrique\n");
+                      printf("Simplification algebrique\n");
 
                       Simplify(q1,i);
                       optimized = 1;
@@ -273,7 +273,7 @@ quadruplet* optimize_quads(quadruplet* quads,int num_quads) {
                   }       
             // Élimination code inutile
                   else if (strcmp (q1->res,q2->arg1)==0 && strcmp (q2->op,"=")==0 ) {
-                        //printf("%s%s",q2->arg1,q1->res);
+                        printf("%s%s",q2->arg1,q1->res);
                           for(int k=j+1;k<qc;k++){
               
                             quadruplet* q3 = &quads[k];
@@ -284,7 +284,7 @@ quadruplet* optimize_quads(quadruplet* quads,int num_quads) {
                                     
                                     quadruplet* q4 = &quads[f];
 
-                                      
+
                                         if(strcmp (q4->arg1,q3->res)==0 && strcmp (q4->op,"=")==0){
 
                                           strcpy(q4->arg1,q2->res);
@@ -309,11 +309,11 @@ quadruplet* optimize_quads(quadruplet* quads,int num_quads) {
             // Propagation de copie
                   else if (strcmp(q1->op, "=") == 0  && checkIfResChange(quads,num_quads,i)==0) {
                     if (strcmp (q1->res,q2->arg1) ==0){
-                    //printf("Propagation d'expression arg1\n");
+                    printf("Propagation d'expression arg1\n");
                       strcpy(q2->arg1, q1->arg1);
                       optimized = 1;
                     }else if(strcmp (q1->res,q2->arg2)==0){
-                      //printf("Propagation d'expression arg2\n");
+                      printf("Propagation d'expression arg2\n");
                       strcpy(q2->arg2, q1->arg1);
                       optimized = 1;
                     }
@@ -322,8 +322,8 @@ quadruplet* optimize_quads(quadruplet* quads,int num_quads) {
                     num_quads--;
                     i--;
                   }
-                  //propagation expression
-                else if((strcmp(q1->arg1,q2->res)||(strcmp(q1->arg2,q2->res)))&&(strncmp(q2->arg1, "T", 1) == 0) && strcmp(q2->op, "=") == 0 ){
+                //propagation expression
+                else if((strcmp(q1->arg1,q2->res)== 0 ||(strcmp(q1->arg2,q2->res)== 0 ))&&(strncmp(q2->arg1, "T", 1) == 0) && strcmp(q2->op, "=") == 0 ){
                   strcpy(q1->arg1,q2->arg1);
                 }
             
@@ -359,9 +359,17 @@ void generateAssemblyCode(quadruplet* quads, int numQuadruplets, const char* fil
         } else if (strcmp(quad->op, "/") == 0) {
             fprintf(file, "DIV %s, %s, %s\n", quad->res, quad->arg1, quad->arg2);
         } else if (strcmp(quad->op, "BE") == 0) {
-            fprintf(file, "BE %s, %s, %s\n", quad->res, quad->arg1, quad->arg2);
+            fprintf(file, "JE %s, %s, %s\n", quad->res, quad->arg1, quad->arg2);
         } else if (strcmp(quad->op, "BR") == 0) {
-            fprintf(file, "BR %s\n", quad->res);
+            fprintf(file, "JMP %s\n", quad->res);
+        }else if (strcmp(quad->op, "BLE") == 0) {
+            fprintf(file, "JLE %s\n", quad->res);
+        }else if (strcmp(quad->op, "BL") == 0) {
+            fprintf(file, "JL %s\n", quad->res);
+        }else if (strcmp(quad->op, "BGE") == 0) {
+            fprintf(file, "JGE %s\n", quad->res);
+        }else if (strcmp(quad->op, "BG") == 0) {
+            fprintf(file, "JG %s\n", quad->res);
         }
        
     }

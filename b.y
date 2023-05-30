@@ -399,7 +399,8 @@ expr :  expr  padd  expr {
                 $$.entier=$1;
           
            
-        }
+        }    
+         
         | reel {
                 $$.type = 1; // initialiser le type de la nouvelle expression à réel
                   $$.reel=$1;
